@@ -59,7 +59,7 @@ function LoginPage() {
           />
         </div>
         {errorMessage && <p className="error">{errorMessage}</p>}
-        <button type="submit" className="login-button">로그인</button>
+        <button type="submit" className="submit-button">로그인</button>
         <button
           type="button"
           className="signup-button"

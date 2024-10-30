@@ -79,7 +79,7 @@ function UpdatePhonePage() {
     <div className="container">
       <h1 className="title">전화번호 변경</h1>
       <form className="form">
-        <div className="input-group">
+        <div className="verify-input-group">
           <input
             type="text"
             value={phone}
@@ -87,10 +87,10 @@ function UpdatePhonePage() {
             placeholder="전화번호 입력"
             className="input"
           />
-          <button onClick={handleSendSms} className="button">인증번호 발송</button>
+          <button onClick={handleSendSms} className="verify-button">인증번호 발송</button>
         </div>
 
-        <div className="input-group">
+        <div className="verify-input-group">
           <input
             type="text"
             value={smsCode}
@@ -98,7 +98,7 @@ function UpdatePhonePage() {
             placeholder="인증번호 입력"
             className="input"
           />
-          <button onClick={handleVerifySms} className="button">인증번호 확인</button>
+          <button onClick={handleVerifySms} className="verify-button">인증번호 확인</button>
         </div>
 
         <button onClick={handleChangePhone} className="submit-button">전화번호 변경</button>

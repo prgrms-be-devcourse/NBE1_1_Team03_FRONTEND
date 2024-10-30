@@ -1,4 +1,3 @@
-// src/pages/FindIdPage.js
 import React, { useState } from 'react';
 import './FindIdPage.css';
 
@@ -46,7 +45,7 @@ function FindIdPage() {
     <div className="container">
       <h1 className="title">아이디 찾기</h1>
       <form className="form">
-        <div className="input-group">
+        <div className="verify-input-group">
           <input
             type="text"
             value={phone}
@@ -54,11 +53,11 @@ function FindIdPage() {
             placeholder="전화번호 입력"
             className="input"
           />
-          <button type="button" onClick={handleSendSms} className="button">
+          <button type="button" onClick={handleSendSms} className="verify-button">
             인증번호 발송
           </button>
         </div>
-        <div className="input-group">
+        <div className="verify-input-group">
           <input
             type="text"
             value={code}
@@ -66,7 +65,7 @@ function FindIdPage() {
             placeholder="인증번호 입력"
             className="input"
           />
-          <button type="button" onClick={handleFindId} className="button">
+          <button type="button" onClick={handleFindId} className="verify-button">
             아이디 찾기
           </button>
         </div>

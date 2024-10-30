@@ -1,4 +1,3 @@
-// src/pages/FindPasswordPage.js
 import React, { useState } from 'react';
 import './FindPasswordPage.css';
 
@@ -119,7 +118,7 @@ const InputGroup = ({ label, value, onChange, placeholder, type = 'text', hasBut
         className="input"
       />
       {hasButton && (
-        <button type="button" onClick={onButtonClick} className="button">
+        <button type="button" onClick={onButtonClick} className="verify-button">
           {buttonText}
         </button>
       )}

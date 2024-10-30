@@ -1,12 +1,7 @@
 /* src/pages/UpdateNamePage.css */
 @import '../../components/common/common.css';
 
-.title {
-  font-size: 96px;
-  font-weight: 700;
-  margin-bottom: 30px;
-}
-
-.input {
-  margin-bottom: 10px;
+.label {
+  font-size: 30px;
+  margin-bottom: 8px;
 }

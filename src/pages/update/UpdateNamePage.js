@@ -1,4 +1,3 @@
-// src/pages/UpdateNamePage.js
 import React, { useState } from 'react';
 import './UpdateNamePage.css';
 
