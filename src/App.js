@@ -1,0 +1,45 @@
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Main from './pages/main/Main';
+import Product from './pages/product/Product';
+import ProductDetail from './pages/product/ProductDetail';
+import BoardList from './pages/board/BoardList';
+import BoardCreate from './pages/board/BoardCreate';
+import MyPage from './pages/mypage/MyPage';
+import UpdateInfoPage from './pages/update/UpdateInfoPage';
+import UpdateNamePage from './pages/update/UpdateNamePage';
+import UpdatePhonePage from './pages/update/UpdatePhonePage';
+import ConfirmPasswordPage from './pages/update/ConfirmPasswordPage';
+import UpdatePasswordPage from './pages/update/UpdatePasswordPage';
+import SignUpPage from './pages/auth/SignUpPage';
+import LoginPage from './pages/auth/LoginPage';
+import FindIdPage from './pages/auth/FindIdPage';
+import FindPasswordPage from './pages/auth/FindPasswordPage';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/products" element={<Product />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/board" element={<BoardList />} />
+        <Route path="/boardList" element={<BoardList />} />
+        <Route path="/boardcreate" element={<BoardCreate />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/update" element={<UpdateInfoPage />} />
+        <Route path="/update-name" element={<UpdateNamePage />} />
+        <Route path="/update-phone" element={<UpdatePhonePage />} /> 
+        <Route path="/confirm-password" element={<ConfirmPasswordPage />} />
+        <Route path="/update-password" element={<UpdatePasswordPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/find-id" element={<FindIdPage />} /> 
+        <Route path="/find-password" element={<FindPasswordPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;

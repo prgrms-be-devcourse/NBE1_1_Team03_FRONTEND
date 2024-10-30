@@ -1,0 +1,181 @@
+.screen {
+  text-align: center;
+  font-family: "Pretendard", sans-serif;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 80px; /* 바텀 네비게이션 높이만큼 패딩 */
+  background-color: #f8f8fa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 헤더, 상품 목록, 네비게이션을 위아래로 배치 */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; /* 좌측 정렬에서 우측까지 공간 분배 */
+  align-items: baseline; /* 텍스트와 포인트를 같은 줄에 배치 */
+  padding: 10px 20px; /* 상하 패딩을 최소화 */
+  gap: 5px; /* 보유 포인트와 point 사이의 간격을 줄임 */
+  margin-bottom: 5px; /* 아래쪽 여백을 최소화 */
+}
+
+.header h1 {
+  font-size: 18px; /* 보유 포인트 크기 소폭 조정 */
+  font-weight: bold;
+  margin: 0;
+}
+
+.point {
+  font-size: 18px; /* point 크기 소폭 조정 */
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+
+.product-list-container {
+  flex-grow: 1;
+  overflow-y: auto; /* 상품 목록에 스크롤 적용 */
+  max-height: 450px; /* 고정된 높이를 조금 줄임 */
+  padding: 0 20px;
+  margin-top: 0; /* 상품 목록의 위쪽 마진 제거 */
+  min-height: 450px; /* 최소 높이를 페이지네이션이 항상 하단에 위치하도록 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 상품 목록과 페이지네이션을 위아래로 배치 */
+}
+
+.product-list {
+  flex-grow: 1; /* 상품 목록이 가능한 공간을 채우도록 설정 */
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* 각 상품 간의 간격을 줄임 */
+}
+
+.product-card {
+  display: flex;
+  align-items: flex-start; /* 상단 정렬로 변경 */
+  padding: 10px;
+  gap: 15px; /* 이미지와 텍스트 사이 간격 조정 */
+  background-color: f8f8fa;
+  height: 100px; /* 카드 높이 조정 */
+  box-sizing: border-box;
+  cursor: pointer; /* 클릭 가능함을 표시 */
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 상단 정렬 */
+  gap: 5px; /* 제목과 가격 사이 간격 */
+  height: 100%;
+}
+
+.product-info h2 {
+  margin-top: 15px; /* 상단 마진 추가 */
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+  line-height: 1.2;
+  /* 2줄 이상일 때 말줄임표 처리 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.product-info p {
+  margin-top: 5px; /* 상단 마진 추가 */
+  font-size: 15px;
+  color: #111;
+  margin: 0;
+  font-weight: bold;
+}
+
+/* 이미지 관련 스타일 */
+.product-image-container {
+  width: 80px !important;
+  height: 80px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+}
+
+/* 페이지네이션 버튼 스타일 */
+.pagination {
+  margin-top: auto; /* 페이지네이션을 컨테이너의 하단에 고정 */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0; /* 페이지네이션 위쪽 마진을 줄임 */
+  background-color: #f8f8fa;
+  padding: 5px 0;
+  position: relative; /* 위치 고정 */
+}
+
+.pagination button {
+  padding: 8px;
+  font-size: 14px; /* 버튼 크기를 줄임 */
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.pagination .active {
+  font-weight: bold;
+  color: red;
+}
+
+/* 하단 네비게이션 바 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background-color: #f8f8fa;
+  border-top: 1px solid #ccc;
+}
+
+.bottom-nav a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+}
+
+.bottom-nav a.active {
+  font-weight: bold;
+  color: #da1a1d;
+}
+
+/* Pixel 6 Pro 해상도 대응 */
+@media (min-width: 360px) and (max-width: 412px) {
+  .product-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  .product-info h2 {
+    font-size: 18px;
+  }
+
+  .product-info p {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,35 @@
+/* src/pages/UpdateInfoPage.css */
+@import '../../components/common/common.css';
+
+.title {
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.button-container {
+  width: 80%;
+  max-width: 900px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0px 5px 20px rgba(96, 100, 112, 0.1);
+}
+
+.arrow {
+  width: 54px;
+  height: 54px;
+  background-color: #D9D9D9;
+  border-radius: 50%;
+}

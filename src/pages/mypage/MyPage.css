@@ -1,0 +1,180 @@
+.screen {
+  text-align: center;
+  font-family: "Pretendard", sans-serif;
+  position: relative;
+  min-height: 70vh;
+  padding-bottom: 80px; /* 바텀 네비게이션 패딩 */
+  background-color: #f8f8fa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body {
+  background-color: #f8f8fa;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 20px 20px;
+  margin-bottom: 5px;
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.point-info {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 포인트와 버튼 사이 간격 */
+}
+
+.point {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 20px;
+  color: #000;
+}
+
+.point::after {
+  content: 'P';
+  margin-left: 5px;
+  color: #000;
+  font-weight: bold;
+}
+
+.edit-button {
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 유저 정보 섹션 스타일 */
+.user-info {
+  margin: 0;
+  padding: 0 20px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.info-label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info-value {
+  font-size: 18px;
+  color: #555;
+}
+
+/* 수평 스와이프 섹션 */
+.horizontal-scroll-container {
+  margin: 20px 0;
+  text-align: left;
+  -ms-overflow-style: none;  /* 인터넷 익스플로러 */
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none;  /* 크롬, 사파리, 엣지 */
+}
+
+.horizontal-scroll-container h2 {
+  font-size: 18px;
+  padding: 0 20px;
+  margin-bottom: 10px;
+}
+
+.scrollable-list {
+  display: flex;
+  overflow-x: scroll;
+  gap: 15px;
+  padding: 0 20px;
+}
+
+.card {
+  min-width: 150px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* product-image 고정된 비율 유지 */
+/* product-image 고정된 비율 유지 */
+.product-image-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* 1:1 비율 고정 */
+  position: relative;
+}
+
+.product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 비율을 유지하면서 이미지가 고정, 잘리지 않음 */
+  border-radius: 8px;
+  background-color: #f8f8f8;
+}
+
+/* 링크 이미지 */
+.barcode-image {
+  width: 100px;
+  height: auto;
+  aspect-ratio: 3 / 1; /* 가로 기준으로 비율 맞춤 */
+  object-fit: contain; /* 이미지가 가로에 맞춰 잘리거나 왜곡되지 않게 */
+}
+
+/* product-image와 barcode-image 사이의 margin 제거 */
+.product-image-container, .barcode-image {
+  margin: 0;
+}
+
+.card-info {
+  margin-top: 10px;
+}
+
+.card-info h3 {
+  font-size: 14px;
+  margin: 0 0 5px 0;
+}
+
+/* S24 해상도 대응 */
+@media (min-width: 360px) and (max-width: 412px) {
+  .card {
+    min-width: 120px;
+  }
+
+  .product-image-container {
+    padding-bottom: 100%;
+  }
+
+  .barcode-image {
+    width: 80px;
+    height: auto;
+    aspect-ratio: 3 / 1;
+  }
+
+  .card-info h3 {
+    font-size: 12px;
+  }
+}
