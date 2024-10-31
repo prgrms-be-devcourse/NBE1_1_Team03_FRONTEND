@@ -199,7 +199,7 @@ const BoardList = () => {
   const [items, setItems] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYxMTg3LCJleHAiOjE3MzAzNjMxODd9.hWntZPkswUQDU-sd-g2J9hAyF4mLz1mZkN4Av1qVp7M'; // 여기에 실제 토큰을 입력하세요
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYzMzIwLCJleHAiOjE3MzAzNjUzMjB9.SyH8nBBaBDIm7JlH0e-252P0eIEPq33Xo13BWs4POl0'; // 여기에 실제 토큰을 입력하세요
 
   const fetchItems = useCallback(async (page = 0) => {
     try {

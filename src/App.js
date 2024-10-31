@@ -7,6 +7,7 @@ import ProductDetail from './pages/product/ProductDetail';
 import BoardList from './pages/board/BoardList';
 import Board from './pages/board/Board';
 import BoardCreate from './pages/board/BoardCreate';
+import BoardMap from './pages/board/BoardMap';
 import MyPage from './pages/mypage/MyPage';
 import UpdateInfoPage from './pages/update/UpdateInfoPage';
 import UpdateNamePage from './pages/update/UpdateNamePage';
@@ -29,6 +30,7 @@ function App() {
         <Route path="/boardList" element={<BoardList />} />
         <Route path="/board/:boardId" element={<Board />} />
         <Route path="/boardcreate" element={<BoardCreate />} />
+        <Route path="/boardmap" element={<BoardMap />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/update" element={<UpdateInfoPage />} />
         <Route path="/update-name" element={<UpdateNamePage />} />
