@@ -1,14 +1,27 @@
-/* src/pages/LoginPage.css */
 @import '../../components/common/common.css';
 
 .signup-button {
   width: 100%;
-  padding: 18px;
-  font-size: 24px;
+  padding: 10px;
+  font-size: 18px;
   background-color: white;
   color: black;
   border: 1px solid #BDBDBD;
+  margin-top: 15px;
+}
+
+.link-container {
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.link {
+  cursor: pointer;
+  font-size: 15px; 
+  font-weight: 300;
+  text-decoration: underline;
+  margin: 0 5px;
 }
 
 

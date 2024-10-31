@@ -66,7 +66,7 @@ function FindIdPage() {
             className="input"
           />
           <button type="button" onClick={handleFindId} className="verify-button">
-            아이디 찾기
+            인증번호 확인
           </button>
         </div>
         {message && <p className="message">{message}</p>}
