@@ -22,7 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/trashcan-detail/:id" element={<TrashcanDetail />} />
+        <Route path="/trashcan-detail" element={<TrashcanDetail />} />
         <Route path="/products" element={<Product />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/board" element={<BoardList />} />

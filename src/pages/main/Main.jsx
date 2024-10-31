@@ -1,4 +1,3 @@
-// Main.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
@@ -50,6 +49,13 @@ function Main() {
   };
 
   const handleSearch = async () => {
+    const button = document.querySelector('.search-button');
+    button.classList.add('clicked');
+
+    setTimeout(() => {
+      button.classList.remove('clicked');
+    }, 300);
+
     try {
       const response = await fetch(`http://localhost:8080/api/trashcan/search?word=${searchWord}`);
       if (response.ok) {
@@ -67,8 +73,8 @@ function Main() {
     }
   };
 
-  const goToDetail = (id) => {
-    navigate(`/trashcan-detail/${id}`);
+  const goToDetail = (marker) => {
+    navigate('/trashcan-detail', { state: { markerId: marker.id } });
   };
 
   return (
@@ -106,7 +112,7 @@ function Main() {
               yAnchor={1}
             >
               <div style={{ padding: '5px', backgroundColor: 'white', borderRadius: '5px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)' }}>
-                <button onClick={() => goToDetail(selectedMarker.id)} className="detail-button">
+                <button onClick={() => goToDetail(selectedMarker)} className="detail-button">
                   상세보기
                 </button>
               </div>
