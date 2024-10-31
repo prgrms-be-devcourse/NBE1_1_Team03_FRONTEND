@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Main from './pages/main/Main';
+import TrashcanDetail from './pages/main/TrashcanDetail';
 import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
 import BoardList from './pages/board/BoardList';
@@ -21,6 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/trashcan-detail" element={<TrashcanDetail />} />
         <Route path="/products" element={<Product />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/board" element={<BoardList />} />
