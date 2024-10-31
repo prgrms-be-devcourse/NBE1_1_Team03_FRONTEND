@@ -5,6 +5,7 @@ import TrashcanDetail from './pages/main/TrashcanDetail';
 import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
 import BoardList from './pages/board/BoardList';
+import Board from './pages/board/Board';
 import BoardCreate from './pages/board/BoardCreate';
 import MyPage from './pages/mypage/MyPage';
 import UpdateInfoPage from './pages/update/UpdateInfoPage';
@@ -25,8 +26,8 @@ function App() {
         <Route path="/trashcan-detail" element={<TrashcanDetail />} />
         <Route path="/products" element={<Product />} />
         <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/board" element={<BoardList />} />
         <Route path="/boardList" element={<BoardList />} />
+        <Route path="/board/:boardId" element={<Board />} />
         <Route path="/boardcreate" element={<BoardCreate />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/update" element={<UpdateInfoPage />} />

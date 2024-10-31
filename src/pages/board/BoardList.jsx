@@ -2,10 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
-import trashcanIcon from '../../assets/images/trashcan.png';
-import smokeIcon from '../../assets/images/smoke.png';
-import pencilIcon from '../../assets/images/pencil.png';
-import BottomNavigation from '../../components/common/navigation/BottomNavigation';
 
 const H1 = styled.h2`
   color: black;
@@ -134,6 +130,7 @@ const Item = styled.div`
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
 
   @media (max-width: 768px) {
     padding: 10px;
@@ -182,14 +179,27 @@ const PageButton = styled.button`
   }
 `;
 
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5; 
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+`;
+
 const BoardList = () => {
   const navigate = useNavigate();
-  const [boardCategory, setBoardCategory] = useState('REMOVE'); 
+  const [boardCategory, setBoardCategory] = useState('ADD'); 
   const [trashCategory, setTrashCategory] = useState('NORMAL'); 
   const [items, setItems] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMjQ4NTY2LCJleHAiOjE3MzAyNTA1NjZ9.UZ2pYOJUwOTpf-bagPofldJ15UqpusXs205Nzd3zs1U';
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYxMTg3LCJleHAiOjE3MzAzNjMxODd9.hWntZPkswUQDU-sd-g2J9hAyF4mLz1mZkN4Av1qVp7M'; // 여기에 실제 토큰을 입력하세요
 
   const fetchItems = useCallback(async (page = 0) => {
     try {
@@ -243,13 +253,13 @@ const BoardList = () => {
         <Button 
           onClick={() => handleTrashChange('NORMAL')}
           isSelected={trashCategory === 'NORMAL'}>
-          <ButtonImage src={trashcanIcon} alt="일반 쓰레기통" />
+          <ButtonImage src="/images/trashcan.png" alt="일반 쓰레기통" />
           일반 쓰레기통
         </Button>
         <Button 
           onClick={() => handleTrashChange('CIGARETTE')}
           isSelected={trashCategory === 'CIGARETTE'}>
-          <ButtonImage src={smokeIcon} alt="재떨이" />
+          <ButtonImage src="/images/smoke.png" alt="재떨이" />
           재떨이
         </Button>
       </Header>
@@ -274,7 +284,7 @@ const BoardList = () => {
 
       <ItemList>
         {items.map((item) => (
-          <Item key={item.id} onClick={() => navigate('/board')}>
+          <Item key={item.id} onClick={() => navigate(`/board/${item.id}`)}> {/* boardId를 넘김 */}
             <Image src={item.boardFirstImgUrl} alt="게시글 이미지" />
             <Description>
               <h4>{item.roadNameAddress}</h4>
@@ -284,7 +294,7 @@ const BoardList = () => {
         ))}
 
         <AddButton onClick={() => navigate('/boardcreate')}>
-          <ButtonImage src={pencilIcon} alt="write" />
+          <ButtonImage src="/images/pencil.png" alt="write" />
         </AddButton>
       </ItemList>
 
@@ -296,7 +306,12 @@ const BoardList = () => {
         ))}
       </Pagination>
 
-      <BottomNavigation />
+      <Footer>
+        <Button onClick={() => navigate('/main')}>메인</Button>
+        <Button onClick={() => navigate('/boardList')} isSelected={true}>게시판</Button>
+        <Button onClick={() => navigate('/products')}>상품</Button>
+        <Button onClick={() => navigate('/my')}>마이</Button>
+      </Footer>
     </Container>
   );
 };
