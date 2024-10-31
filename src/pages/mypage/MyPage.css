@@ -53,9 +53,10 @@ body {
 .edit-button {
   padding: 5px 10px;
   background-color: #e0e0e0;
-  border: none;
+  border: 0.1;
   border-radius: 5px;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 15px;
   cursor: pointer;
 }
 
