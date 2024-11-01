@@ -76,7 +76,7 @@ function SignUpPage() {
 
   const closeModalAndNavigate = () => {
     setShowModal(false);
-    navigate('/');
+    navigate('/login');
   };
 
   return (
