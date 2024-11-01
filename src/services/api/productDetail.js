@@ -1,11 +1,11 @@
 import axiosInstance from '../config/axios';
 
 // 상품 정보와 포인트를 가져오는 함수
-export const fetchProductAndPoints = async (id) => {
+export const fetchProductAndPoints = async (productId) => {
   try {
     const [productResponse, pointsResponse] = await Promise.all([
-      axiosInstance.get(`/api/products/${id}`),
-      axiosInstance.get(`/api/points/user1_id_123456`)
+      axiosInstance.get(`/api/products/${productId}`),
+      axiosInstance.get(`/api/points/user`)
     ]);
     return {
       product: productResponse.data.data,
@@ -18,10 +18,9 @@ export const fetchProductAndPoints = async (id) => {
 };
 
 // 상품 구매 함수
-export const purchaseProduct = async (userId, productId) => {
+export const purchaseProduct = async (productId) => {
   try {
     const response = await axiosInstance.post(`/api/payment`, {
-      userId,
       productId
     });
     return response.data.data.point;

@@ -25,7 +25,7 @@ const MyPage = () => {
         console.error('유저 정보 불러오기에 실패했습니다:', error);
       });
 
-    axios.get('http://localhost:8080/api/points/user1_id_123456')
+    axios.get('http://localhost:8080/api/points/user')
       .then(response => {
         setUserPoint(response.data.data.point);
       })
@@ -36,7 +36,7 @@ const MyPage = () => {
 
   // 기프티콘 목록 불러오기
   useEffect(() => {
-    axios.get('http://localhost:8080/api/gifticons/user1_id_123456')
+    axios.get('http://localhost:8080/api/gifticons/user')
       .then(response => {
         setGifticons(response.data.data);
       })
