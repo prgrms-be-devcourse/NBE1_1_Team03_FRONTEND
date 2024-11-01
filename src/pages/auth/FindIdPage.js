@@ -12,7 +12,7 @@ function FindIdPage() {
 
   const handleSendSms = async () => {
     try {
-      const response = await fetch('http://localhost:8080/sms/send1', {
+      const response = await fetch('http://localhost:8080/sms/send-for-registered', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,14 +21,7 @@ function FindIdPage() {
       });
 
       const data = await response.json();
-
-      if (response.ok) {
-        setMessage('인증번호가 발송되었습니다.');
-      } else if (data.message === '가입되지 않은 번호입니다.') {
-        setMessage('가입되지 않은 번호입니다. 다시 확인해주세요.');
-      } else {
-        setMessage(data.message || '인증번호 발송에 실패했습니다.');
-      }
+      setMessage(response.ok ? '인증번호가 발송되었습니다.' : data.message || '인증번호 발송에 실패했습니다.');
     } catch (error) {
       setMessage('서버에 문제가 발생했습니다. 다시 시도해주세요.');
       console.error('Error:', error);
@@ -45,7 +38,7 @@ function FindIdPage() {
       const data = await response.json();
       if (response.ok) {
         setEmail(data.data.email);
-        setShowModal(true); 
+        setShowModal(true);
       } else {
         setMessage(data.message || '아이디 찾기에 실패했습니다.');
       }
@@ -57,7 +50,7 @@ function FindIdPage() {
 
   const closeModal = () => {
     setShowModal(false);
-    navigate('/login'); 
+    navigate('/login');
   };
 
   return (
