@@ -18,6 +18,9 @@ import SignUpPage from './pages/auth/SignUpPage';
 import LoginPage from './pages/auth/LoginPage';
 import FindIdPage from './pages/auth/FindIdPage';
 import FindPasswordPage from './pages/auth/FindPasswordPage';
+import AdminBoardList from "./pages/admin/AdminBoardList";
+import AdminEctBoard from "./pages/admin/AdminEctBoard";
+import AdminModifyBoard from "./pages/admin/AdminModifyBoard";
 
 function App() {
   return (
@@ -41,6 +44,9 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/find-id" element={<FindIdPage />} /> 
         <Route path="/find-password" element={<FindPasswordPage />} />
+        <Route path="/admin/boardList" element={<AdminBoardList />} />
+        <Route path="/admin/ectBoard/:boardId" element={<AdminEctBoard/> } />
+        <Route path="/admin/modifyBoard/:boardId" element={<AdminModifyBoard/> } />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
