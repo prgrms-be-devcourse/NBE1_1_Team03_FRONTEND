@@ -21,13 +21,11 @@ function LoginPage() {
       });
 
       if (response.ok) {
-        // 서버 응답에서 accessToken을 로컬 스토리지에 저장
         const accessToken = response.headers.get("access");
 
         if (accessToken) {
-          // 로컬 스토리지에 accessToken 저장
           localStorage.setItem('accessToken', accessToken);
-          navigate('/'); // 로그인 후 홈으로 이동
+          navigate('/'); 
         } else {
           setErrorMessage('토큰을 가져올 수 없습니다. 서버를 확인해주세요.');
         }

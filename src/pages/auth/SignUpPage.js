@@ -11,13 +11,13 @@ function SignUpPage() {
   const [smsCode, setSmsCode] = useState('');
   const [errorMessage, setErrorMessage] = useState({});
   const [message, setMessage] = useState('');
-  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const [showModal, setShowModal] = useState(false); 
   const navigate = useNavigate();
 
-  // 인증번호 발송 핸들러
+
   const handleSendSms = async () => {
     try {
-      const response = await fetch('http://localhost:8080/sms/send', {
+      const response = await fetch('http://localhost:8080/sms/send-for-unregistered', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ function SignUpPage() {
     }
   };
 
-  // 회원가입 핸들러
+
   const handleSignUp = async (e) => {
     e.preventDefault();
 
@@ -67,14 +67,13 @@ function SignUpPage() {
         setErrorMessage(data.errors || {});
       } else {
         setErrorMessage({});
-        setShowModal(true); // 회원가입 성공 시 모달 창 표시
+        setShowModal(true); 
       }
     } catch (error) {
       setErrorMessage({ global: '서버에 문제가 발생했습니다.' });
     }
   };
 
-  // 모달 닫기 핸들러 및 메인 페이지로 이동
   const closeModalAndNavigate = () => {
     setShowModal(false);
     navigate('/');

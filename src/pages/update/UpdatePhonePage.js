@@ -7,7 +7,7 @@ function UpdatePhonePage() {
   const [smsCode, setSmsCode] = useState('');
   const [message, setMessage] = useState('');
   const [isVerified, setIsVerified] = useState(false);
-  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const [showModal, setShowModal] = useState(false); 
   const navigate = useNavigate();
 
   // 인증번호 발송 요청
@@ -35,7 +35,7 @@ function UpdatePhonePage() {
     }
   };
 
-  // 전화번호 변경 요청 (인증 코드 포함)
+  // 전화번호 변경 요청 (인증 코드 )
   const handleChangePhone = async (e) => {
     e.preventDefault();
 
@@ -60,7 +60,7 @@ function UpdatePhonePage() {
       });
 
       if (response.ok) {
-        setShowModal(true); // 전화번호 변경 성공 시 모달 표시
+        setShowModal(true);
         setIsVerified(false);
       } else {
         const data = await response.json();
@@ -72,7 +72,7 @@ function UpdatePhonePage() {
     }
   };
 
-  // 모달 닫기 핸들러 및 마이페이지로 이동
+  // 모달 닫기 
   const closeModalAndNavigate = () => {
     setShowModal(false);
     navigate('/mypage');

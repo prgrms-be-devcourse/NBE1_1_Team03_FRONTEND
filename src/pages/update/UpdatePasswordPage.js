@@ -7,7 +7,7 @@ function UpdatePasswordPage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const [showModal, setShowModal] = useState(false); 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

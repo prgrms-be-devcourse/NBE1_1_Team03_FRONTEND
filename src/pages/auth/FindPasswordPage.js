@@ -9,7 +9,7 @@ function PasswordResetPage() {
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState({});
-  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const [showModal, setShowModal] = useState(false); 
   const navigate = useNavigate();
 
   const handleSendSms = async () => {
@@ -58,7 +58,7 @@ function PasswordResetPage() {
 
       const data = await response.json();
       if (response.ok) {
-        setShowModal(true); // 모달 표시
+        setShowModal(true); 
       } else {
         setErrorMessage(data.errors || {});
         setMessage(data.message || '비밀번호 재설정 실패.');
@@ -70,7 +70,7 @@ function PasswordResetPage() {
 
   const closeModal = () => {
     setShowModal(false);
-    navigate('/login'); // 로그인 페이지로 이동
+    navigate('/login'); 
   };
 
   return (
@@ -120,7 +120,6 @@ function PasswordResetPage() {
         {errorMessage.global && <p className="error">{errorMessage.global}</p>}
       </form>
 
-      {/* 모달 창 */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
