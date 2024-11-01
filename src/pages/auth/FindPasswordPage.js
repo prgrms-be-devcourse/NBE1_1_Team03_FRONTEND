@@ -1,96 +1,109 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './FindPasswordPage.css';
 
-function FindPasswordPage() {
+function PasswordResetPage() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [code, setCode] = useState('');
+  const [smsCode, setSmsCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [isVerified, setIsVerified] = useState(false);
   const [message, setMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState({});
+  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const navigate = useNavigate();
 
   const handleSendSms = async () => {
     try {
-      const response = await fetch('http://localhost:8080/sms/send', {
+      const response = await fetch('http://localhost:8080/sms/send1', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phoneNum: phone }),
       });
+
       const data = await response.json();
-      if (response.ok) setMessage('인증번호가 발송되었습니다.');
-      else setErrorMessage(data.message || '인증번호 발송에 실패했습니다.');
+      if (response.ok) {
+        setMessage('인증번호가 발송되었습니다.');
+      } else {
+        setMessage(data.message || '인증번호 발송에 실패했습니다.');
+      }
     } catch (error) {
+      setMessage('서버에 문제가 발생했습니다. 다시 시도해주세요.');
       console.error('Error:', error);
-      setErrorMessage('서버에 문제가 발생했습니다.');
     }
   };
 
-  const handleVerifySms = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/sms/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, code }),
-      });
-      const data = await response.json();
-      if (response.ok) setIsVerified(true);
-      else setErrorMessage(data.message || '인증 실패.');
-    } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('서버에 문제가 발생했습니다.');
-    }
-  };
-
-  const handleResetPassword = async (e) => {
+  const handlePasswordReset = async (e) => {
     e.preventDefault();
-    if (!isVerified) {
-      setErrorMessage('먼저 인증을 완료해주세요.');
+
+    if (!smsCode || smsCode.trim() === '') {
+      setMessage('인증번호를 입력해주세요.');
       return;
     }
+
     try {
       const response = await fetch('http://localhost:8080/api/users/reset-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, phone, code, newPassword }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          phone,
+          code: smsCode,
+          newPassword
+        }),
       });
+
       const data = await response.json();
-      if (response.ok) setMessage('비밀번호가 성공적으로 변경되었습니다.');
-      else setErrorMessage(data.message || '비밀번호 변경에 실패했습니다.');
+      if (response.ok) {
+        setShowModal(true); // 모달 표시
+      } else {
+        setErrorMessage(data.errors || {});
+        setMessage(data.message || '비밀번호 재설정 실패.');
+      }
     } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('서버에 문제가 발생했습니다.');
+      setErrorMessage({ global: '서버에 문제가 발생했습니다.' });
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    navigate('/login'); // 로그인 페이지로 이동
   };
 
   return (
     <div className="container">
       <h1 className="title">비밀번호 찾기</h1>
-      <form onSubmit={handleResetPassword} className="form">
+      <form onSubmit={handlePasswordReset} className="form">
         <InputGroup
           label="아이디"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="아이디 입력"
+          placeholder="아이디 입력(이메일 형식)"
         />
+        {errorMessage.email && <p className="error">{errorMessage.email}</p>}
+
         <InputGroup
           label="전화번호"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="전화번호 입력"
-          hasButton
-          buttonText="인증번호 발송"
-          onButtonClick={handleSendSms}
         />
+        <button type="button" onClick={handleSendSms} className="verify-button">
+          인증번호 발송
+        </button>
+        {errorMessage.phone && <p className="error">{errorMessage.phone}</p>}
+
         <InputGroup
           label="인증번호"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
+          value={smsCode}
+          onChange={(e) => setSmsCode(e.target.value)}
           placeholder="인증번호 입력"
-          hasButton
-          buttonText="인증번호 확인"
-          onButtonClick={handleVerifySms}
         />
+        {message && <p className="message">{message}</p>}
+
         <InputGroup
           label="새 비밀번호"
           type="password"
@@ -98,32 +111,41 @@ function FindPasswordPage() {
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="새 비밀번호 입력"
         />
-        {errorMessage && <p className="error">{errorMessage}</p>}
-        {message && <p className="success">{message}</p>}
-        <button type="submit" className="submit-button">비밀번호 재설정</button>
+        {errorMessage.newPassword && <p className="error">{errorMessage.newPassword}</p>}
+
+        <button type="submit" className="submit-button">
+          비밀번호 재설정
+        </button>
+
+        {errorMessage.global && <p className="error">{errorMessage.global}</p>}
       </form>
+
+      {/* 모달 창 */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>비밀번호 재설정이 완료되었습니다!</p>
+            <button onClick={closeModal} className="close-button">확인</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-const InputGroup = ({ label, value, onChange, placeholder, type = 'text', hasButton, buttonText, onButtonClick }) => (
+const InputGroup = ({ label, value, onChange, placeholder, type = 'text' }) => (
   <div className="input-group">
     <label className="label">{label}</label>
-    <div className="input-wrapper">
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="input"
-      />
-      {hasButton && (
-        <button type="button" onClick={onButtonClick} className="verify-button">
-          {buttonText}
-        </button>
-      )}
-    </div>
+    <input
+      type={type}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="input"
+      required
+    />
   </div>
 );
 
-export default FindPasswordPage;
+export default PasswordResetPage;
+
