@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './SignUpPage.css';
 
 function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -9,7 +11,8 @@ function SignUpPage() {
   const [smsCode, setSmsCode] = useState('');
   const [errorMessage, setErrorMessage] = useState({});
   const [message, setMessage] = useState('');
-  const [isVerified, setIsVerified] = useState(false); // 인증 완료 여부
+  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const navigate = useNavigate();
 
   // 인증번호 발송 핸들러
   const handleSendSms = async () => {
@@ -19,7 +22,7 @@ function SignUpPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ phone }),
+        body: JSON.stringify({ phoneNum: phone }),
       });
 
       const data = await response.json();
@@ -34,36 +37,12 @@ function SignUpPage() {
     }
   };
 
-  // 인증번호 확인 핸들러
-  const handleVerifySms = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/sms/verify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone, smsCode }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setIsVerified(true);
-        setMessage('인증이 완료되었습니다.');
-      } else {
-        setMessage(data.message || '인증 실패.');
-      }
-    } catch (error) {
-      setMessage('서버에 문제가 발생했습니다. 다시 시도해주세요.');
-      console.error('Error:', error);
-    }
-  };
-
   // 회원가입 핸들러
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    if (!isVerified) {
-      setMessage('전화번호 인증을 완료해주세요.');
+    if (!smsCode || smsCode.trim() === '') {
+      setMessage('인증번호를 입력해주세요.');
       return;
     }
 
@@ -79,6 +58,7 @@ function SignUpPage() {
           passwordCheck,
           nickname,
           phone,
+          smsCode,
         }),
       });
 
@@ -86,12 +66,18 @@ function SignUpPage() {
       if (!response.ok) {
         setErrorMessage(data.errors || {});
       } else {
-        alert('회원가입 성공!');
         setErrorMessage({});
+        setShowModal(true); // 회원가입 성공 시 모달 창 표시
       }
     } catch (error) {
       setErrorMessage({ global: '서버에 문제가 발생했습니다.' });
     }
+  };
+
+  // 모달 닫기 핸들러 및 메인 페이지로 이동
+  const closeModalAndNavigate = () => {
+    setShowModal(false);
+    navigate('/');
   };
 
   return (
@@ -154,9 +140,6 @@ function SignUpPage() {
             placeholder="인증번호 입력"
             className="input"
           />
-          <button type="button" onClick={handleVerifySms} className="verify-button">
-            인증번호 확인
-          </button>
         </div>
         {message && <p className="message">{message}</p>}
 
@@ -166,6 +149,17 @@ function SignUpPage() {
 
         {errorMessage.global && <p className="error">{errorMessage.global}</p>}
       </form>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>회원가입이 완료되었습니다!</p>
+            <button onClick={closeModalAndNavigate} className="close-button">
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
