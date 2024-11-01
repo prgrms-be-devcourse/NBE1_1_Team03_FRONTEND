@@ -1,5 +1,5 @@
-// src/pages/UpdatePasswordPage.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './UpdatePasswordPage.css';
 
 function UpdatePasswordPage() {
@@ -7,7 +7,8 @@ function UpdatePasswordPage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ function UpdatePasswordPage() {
 
       const data = await response.json();
       if (response.ok) {
-        setSuccessMessage('비밀번호가 성공적으로 변경되었습니다.');
+        setShowModal(true);
         setErrorMessage('');
       } else {
         setErrorMessage(data.message || '비밀번호 변경에 실패했습니다.');
@@ -38,6 +39,11 @@ function UpdatePasswordPage() {
       console.error('Error:', error);
       setErrorMessage('오류가 발생했습니다. 다시 시도해주세요.');
     }
+  };
+
+  const closeModalAndNavigate = () => {
+    setShowModal(false);
+    navigate('/mypage');
   };
 
   return (
@@ -81,10 +87,20 @@ function UpdatePasswordPage() {
         </div>
 
         {errorMessage && <p className="error">{errorMessage}</p>}
-        {successMessage && <p className="success">{successMessage}</p>}
 
         <button type="submit" className="button">비밀번호 변경</button>
       </form>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>비밀번호 변경이 완료되었습니다!</p>
+            <button onClick={closeModalAndNavigate} className="close-button">
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
