@@ -13,7 +13,7 @@ function UpdatePhonePage() {
   // 인증번호 발송 요청
   const handleSendSms = async () => {
     try {
-      const response = await fetch('http://localhost:8080/sms/send1', {
+      const response = await fetch('http://localhost:8080/sms/send-for-unregistered', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,6 @@ function UpdatePhonePage() {
     }
   };
 
-  // 전화번호 변경 요청 (인증 코드 )
   const handleChangePhone = async (e) => {
     e.preventDefault();
 
