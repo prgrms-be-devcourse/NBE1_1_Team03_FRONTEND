@@ -18,7 +18,7 @@ export const Product = () => {
   useEffect(() => {
     const getPoints = async () => {
       try {
-        const response = await fetchPoints('user1_id_123456');
+        const response = await fetchPoints();
         console.log(response.data);  // 포인트 응답 로그
         setPoints(response.data.data.point);
       } catch (error) {

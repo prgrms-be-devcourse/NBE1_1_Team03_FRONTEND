@@ -28,7 +28,7 @@ const ProductDetail = () => {
 
   const handlePurchase = async () => {
     try {
-      const updatedPoints = await purchaseProduct("user1_id_123456", parseInt(id));
+      const updatedPoints = await purchaseProduct(parseInt(id));
       alert('결제가 완료되었습니다.');
       setPoints(updatedPoints);
       navigate('/products');
