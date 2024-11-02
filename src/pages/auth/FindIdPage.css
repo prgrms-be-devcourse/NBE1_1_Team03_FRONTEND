@@ -1,18 +1,2 @@
-/* src/pages/FindIdPage.css */
 @import '../../components/common/common.css';
 
-.title {
-  font-size: 96px;
-  font-weight: 700;
-  margin-bottom: 30px;
-}
-
-.input-group {
-  display: flex;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.input-group .button {
-  margin-left: 10px;
-}

@@ -1,17 +1,6 @@
 /* src/pages/UpdateInfoPage.css */
 @import '../../components/common/common.css';
 
-.title {
-  font-size: 64px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  font-size: 32px;
-  margin-bottom: 40px;
-}
-
 .button-container {
   width: 80%;
   max-width: 900px;

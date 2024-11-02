@@ -1,4 +1,3 @@
-// src/pages/ConfirmPasswordPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ConfirmPasswordPage.css';
@@ -22,7 +21,7 @@ function ConfirmPasswordPage() {
 
       const data = await response.json();
       if (response.ok && data.code === 200) {
-        navigate('/update-phone'); // 휴대폰 번호 변경 페이지로 이동
+        navigate('/update-phone'); 
       } else {
         setErrorMessage('비밀번호가 틀렸습니다.');
       }

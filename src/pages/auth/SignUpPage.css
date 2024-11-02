@@ -1,18 +1,2 @@
-/* src/pages/SignUpPage.css */
 @import '../../components/common/common.css';
 
-.title {
-  font-size: 150px;
-  font-weight: 700;
-  margin-bottom: 30px;
-}
-
-.small-button {
-  margin-top: 5px;
-  align-self: flex-end;
-  padding: 10px 20px;
-  background-color: #D9D9D9;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}

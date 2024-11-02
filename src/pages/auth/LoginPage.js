@@ -19,10 +19,16 @@ function LoginPage() {
         },
         body: JSON.stringify({ email, password }),
       });
-      const data = await response.json();
+
       if (response.ok) {
-        localStorage.setItem('accessToken', data.accessToken);
-        navigate('/');
+        const accessToken = response.headers.get("access");
+
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          navigate('/'); 
+        } else {
+          setErrorMessage('토큰을 가져올 수 없습니다. 서버를 확인해주세요.');
+        }
       } else {
         setErrorMessage('이메일 또는 비밀번호가 잘못되었습니다.');
       }
@@ -59,7 +65,7 @@ function LoginPage() {
           />
         </div>
         {errorMessage && <p className="error">{errorMessage}</p>}
-        <button type="submit" className="login-button">로그인</button>
+        <button type="submit" className="submit-button">로그인</button>
         <button
           type="button"
           className="signup-button"
