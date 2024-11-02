@@ -38,7 +38,7 @@
   max-height: 450px; /* 고정된 높이를 조금 줄임 */
   padding: 0 20px;
   margin-top: 0; /* 상품 목록의 위쪽 마진 제거 */
-  min-height: 450px; /* 최소 높이를 페이지네이션이 항상 하단에 위치하도록 설정 */
+  min-height: 520px; /* 최소 높이를 페이지네이션이 항상 하단에 위치하도록 설정 */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 상품 목록과 페이지네이션을 위아래로 배치 */
@@ -54,7 +54,7 @@
 .product-card {
   display: flex;
   align-items: flex-start; /* 상단 정렬로 변경 */
-  padding: 10px;
+  padding: 10px, 10px;
   gap: 15px; /* 이미지와 텍스트 사이 간격 조정 */
   background-color: f8f8fa;
   height: 100px; /* 카드 높이 조정 */
@@ -63,12 +63,11 @@
 }
 
 .product-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* 상단 정렬 */
-  gap: 5px; /* 제목과 가격 사이 간격 */
-  height: 100%;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  margin-bottom: 20px;
 }
 
 .product-info h2 {
@@ -87,7 +86,7 @@
 }
 
 .product-info p {
-  margin-top: 5px; /* 상단 마진 추가 */
+  margin-top: 10px; /* 상단 마진 추가 */
   font-size: 15px;
   color: #111;
   margin: 0;
@@ -123,7 +122,7 @@
   gap: 10px;
   margin: 10px 0; /* 페이지네이션 위쪽 마진을 줄임 */
   background-color: #f8f8fa;
-  padding: 5px 0;
+  padding: 50px 0;
   position: relative; /* 위치 고정 */
 }
 

@@ -25,7 +25,7 @@ const MyPage = () => {
         console.error('유저 정보 불러오기에 실패했습니다:', error);
       });
 
-    axios.get('http://localhost:8080/api/points/user1_id_123456')
+    axios.get('http://localhost:8080/api/points/user')
       .then(response => {
         setUserPoint(response.data.data.point);
       })
@@ -36,7 +36,7 @@ const MyPage = () => {
 
   // 기프티콘 목록 불러오기
   useEffect(() => {
-    axios.get('http://localhost:8080/api/gifticons/user1_id_123456')
+    axios.get('http://localhost:8080/api/gifticons/user')
       .then(response => {
         setGifticons(response.data.data);
       })
@@ -44,6 +44,21 @@ const MyPage = () => {
         console.error('기프티콘 목록 불러오기에 실패했습니다:', error);
       });
   }, []);
+
+    // 게시판 데이터 불러오기
+    useEffect(() => {
+      axios.get('http://localhost:8080/api/boards/my')
+        .then(response => {
+          setBoards(response.data.data.map(board => ({
+            boardFirstImgUrl: board.boardFirstImgUrl,
+            roadNameAddress: board.roadNameAddress,
+            detailedAddress: board.detailedAddress
+          })));
+        })
+        .catch(error => {
+          console.error('게시판 정보 불러오기에 실패했습니다:', error);
+        });
+    }, []);
 
   return (
     <div className="screen">
@@ -72,29 +87,22 @@ const MyPage = () => {
         </div>
       </div>
 
-      {/* 두 개의 수평 스와이프 섹션 */}
+      {/* 게시판 섹션 */}
       <div className="horizontal-scroll-container">
-        <h2>쓰레기통 목록</h2>
+        <h2>게시판 목록</h2>
         <div className="scrollable-list">
-          {gifticons.map((gifticon, index) => (
+          {boards.map((board, index) => (
             <div key={index} className="card">
-              {/* productImage 스타일 적용 */}
               <div className="product-image-container">
                 <img
-                  src={gifticon.productImageUrl}
-                  alt="Trashcan"
+                  src={board.boardFirstImgUrl}
+                  alt="Board"
                   className="product-image"
                 />
               </div>
-              {/* barcodeImage 스타일 적용 */}
-              <img
-                src={gifticon.barcodeImageUrl}
-                alt="Barcode"
-                className="barcode-image"
-              />
-              {/* h3 텍스트 */}
               <div className="card-info">
-                <h3>{gifticon.productName}</h3>
+                <h3>{board.roadNameAddress}</h3>
+                <p>{board.detailedAddress}</p>
               </div>
             </div>
           ))}

@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';  // Swiper CSS 임포트
 import "./Product.css";
 import { useNavigate } from 'react-router-dom';
 import BottomNavigation from "../../components/common/navigation/BottomNavigation";
-
-const API_BASE_URL = window.location.hostname === 'localhost'
-  ? "http://localhost:8080"  // 로컬 환경
-  : "http://10.0.2.2:8080";  // 에뮬레이터 환경
+import { fetchPoints, fetchProducts } from '../../services/api/product';
 
 export const Product = () => {
   const [points, setPoints] = useState(0);
@@ -20,9 +16,9 @@ export const Product = () => {
 
   // 포인트 API 호출
   useEffect(() => {
-    const fetchPoints = async () => {
+    const getPoints = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/points/user1_id_123456`);
+        const response = await fetchPoints();
         console.log(response.data);  // 포인트 응답 로그
         setPoints(response.data.data.point);
       } catch (error) {
@@ -30,13 +26,13 @@ export const Product = () => {
       }
     };
 
-    fetchPoints();
+    getPoints();
   }, []);
 
   // 상품 API 호출
-  const fetchProducts = async (page) => {
+  const getProducts = async (page) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/products?page=${page}&size=5`);
+      const response = await fetchProducts(page);
       console.log(response.data);  // 상품 응답 로그
       const { products, totalPages } = response.data.data;
       console.log("상품 데이터:", products); // 상품 배열에 있는 데이터를 확인
@@ -49,7 +45,7 @@ export const Product = () => {
   };
 
   useEffect(() => {
-    fetchProducts(currentPage);
+    getProducts(currentPage);
   }, [currentPage]);
 
   return (
@@ -106,19 +102,19 @@ export const Product = () => {
   
       {/* 페이지네이션 */}
       <div className="pagination">
-        <button disabled={currentPage === 1} onClick={() => fetchProducts(currentPage - 1)}>
+        <button disabled={currentPage === 1} onClick={() => getProducts(currentPage - 1)}>
           이전
         </button>
         {[...Array(totalPages).keys()].map((page) => (
           <button
             key={page + 1}
             className={currentPage === page + 1 ? "active" : ""}
-            onClick={() => fetchProducts(page + 1)}
+            onClick={() => getProducts(page + 1)}
           >
             {page + 1}
           </button>
         ))}
-        <button disabled={currentPage === totalPages} onClick={() => fetchProducts(currentPage + 1)}>
+        <button disabled={currentPage === totalPages} onClick={() => getProducts(currentPage + 1)}>
           다음
         </button>
       </div>

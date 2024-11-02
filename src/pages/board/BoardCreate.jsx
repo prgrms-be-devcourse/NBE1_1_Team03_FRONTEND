@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const Container = styled.div`
   padding: 20px;
@@ -26,8 +28,8 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   padding: 10px 20px;
   border: 1px solid #87ceeb;
-  background: transparent;
-  color: #87ceeb;
+  background: ${({ selected }) => (selected ? '#87ceeb' : 'transparent')};
+  color: ${({ selected }) => (selected ? 'white' : '#87ceeb')};
   border-radius: 5px;
   cursor: pointer;
   flex: 1;
@@ -46,21 +48,23 @@ const AddressSection = styled.div`
 `;
 
 const ImagePlaceholder = styled.div`
-  height: 150px;
   border: 2px dashed #87ceeb;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
+  align-items: flex-start;
+  font-size: 14px;
   color: #333;
   margin-bottom: 20px;
+  position: relative;
+  max-height: 150px;
+  overflow-y: auto;
 `;
 
 const PlusImg = styled.div`
   font-size: 30px; 
   color: #87ceeb;
-  margin-top: 5px; 
+  margin-left: 10px;
+  cursor: pointer;
 `;
 
 const SectionTitle = styled.p`
@@ -77,40 +81,145 @@ const DetailButton = styled(Button)`
   color: white;
 `;
 
+const InfoSection = styled.div`
+  margin-bottom: 20px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+`;
+
+const FileInput = styled.input`
+  margin-right: 10px;
+`;
+
 const BoardCreate = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { latitude, longitude, roadNameAddress, detailedAddress } = location.state || {};
+
+  const [files, setFiles] = useState([]);
+  const [significant, setSignificant] = useState("");
+  const [trashCategory, setTrashCategory] = useState("NORMAL");
+  const [updatedTrashcanStatus, setUpdatedTrashcanStatus] = useState("FULL");
+  const [boardCategory, setBoardCategory] = useState("");
+
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYzNTY3LCJleHAiOjE3MzAzNjU1Njd9.-jBn7nv6_CvIfqXMvGI0q3hVsaEhCZbq-HPWp44K3sI';
+
+  const handleFileChange = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
+  };
+
+  const addFileInput = () => {
+    const newInput = document.createElement('input');
+    newInput.type = 'file';
+    newInput.multiple = true;
+    newInput.onchange = handleFileChange;
+    newInput.style.margin = '5px 0';
+    document.getElementById('file-inputs').appendChild(newInput);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+
+    console.log(boardCategory);
+    console.log(significant);
+    console.log(latitude);
+    console.log(longitude);
+    console.log(roadNameAddress);
+    console.log(detailedAddress);
+    console.log(trashCategory);
+    console.log(updatedTrashcanStatus);
+    formData.append('data', new Blob([JSON.stringify({
+      boardCategory,
+      significant,
+      latitude,
+      longitude,
+      roadNameAddress,
+      detailedAddress,
+      trashCategory,
+      updatedTrashcanStatus
+    })], { type: 'application/json' }));
+
+    files.forEach(file => {
+      formData.append('files', file);
+    });
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/boards', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+      alert(response.data.message);
+      navigate('/success');
+    } catch (error) {
+      console.error(error);
+      alert('제출 실패!');
+    }
+  };
+
   return (
     <Container>
       <Title>신고 작성 페이지</Title>
 
       <SectionTitle>게시글 유형을 선택해주세요.</SectionTitle>
       <ButtonContainer>
-        <Button>신규 등록</Button>
-        <Button>수정</Button>
-        <Button>삭제</Button>
+        <Button onClick={() => setBoardCategory("ADD")} selected={boardCategory === "ADD"}>신규 등록</Button>
+        <Button onClick={() => setBoardCategory("MODIFY")} selected={boardCategory === "MODIFY"}>수정</Button>
+        <Button onClick={() => setBoardCategory("REMOVE")} selected={boardCategory === "REMOVE"}>삭제</Button>
       </ButtonContainer>
-      
-      <AddressSection>
+
+      <SectionTitle>쓰레기통 유형을 선택해 주세요.</SectionTitle>
+      <ButtonContainer>
+        <Button onClick={() => setTrashCategory("NORMAL")} selected={trashCategory === "NORMAL"}>일반 쓰레기통</Button>
+        <Button onClick={() => setTrashCategory("CIGARETTE")} selected={trashCategory === "CIGARETTE"}>재떨이</Button>
+      </ButtonContainer>
+
+      <AddressSection onClick={() => navigate('/boardmap')}>
         <p>여기를 누르면 지도가 나옵니다. 지도에 마커를 찍어 장소를 추가해 주세요.</p>
       </AddressSection>
-      
+
+      <InfoSection>
+        <SectionTitle>선택된 위치 정보</SectionTitle>
+        <p>도로명 주소: {roadNameAddress || '주소 없음'}</p>
+        <p>지번 주소: {detailedAddress || '주소 없음'}</p>
+        <p>위도: {latitude || '정보 없음'}</p>
+        <p>경도: {longitude || '정보 없음'}</p>
+      </InfoSection>
+
       <ImagePlaceholder>
-        사진을 추가해 주세요.
-        <PlusImg>+</PlusImg>
-        </ImagePlaceholder>
-      
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <p style={{ margin: '0' }}>사진을 추가해 주세요.</p> 
+          <PlusImg onClick={addFileInput}>+</PlusImg> 
+        </div>
+        <div id="file-inputs">
+          <FileInput type="file" multiple onChange={handleFileChange} />
+          {files.map((file, index) => (
+            <p key={index}>{file.name}</p>
+          ))}
+        </div>
+      </ImagePlaceholder>
+
       <SectionTitle>쓰레기통 상태를 선택해 주세요.</SectionTitle>
       <ButtonContainer>
-          <Button>거의 안참</Button>
-          <Button>중간</Button>
-          <Button>꽉참</Button>
+        <Button onClick={() => setUpdatedTrashcanStatus("EMPTY")} selected={updatedTrashcanStatus === "EMPTY"}>비어 있음</Button>
+        <Button onClick={() => setUpdatedTrashcanStatus("INTERMEDIATE")} selected={updatedTrashcanStatus === "INTERMEDIATE"}>중간</Button>
+        <Button onClick={() => setUpdatedTrashcanStatus("FULL")} selected={updatedTrashcanStatus === "FULL"}>꽉참</Button>
       </ButtonContainer>
-      
+
       <DescriptionSection>
         <SectionTitle>쓰레기통 특이사항을 작성해 주세요.</SectionTitle>
-        <textarea rows="4" style={{ width: '93%', borderRadius: '5px', border: '1px solid #ccc', padding: '10px' }} />
+        <textarea
+          rows="4"
+          style={{ width: '93%', borderRadius: '5px', border: '1px solid #ccc', padding: '10px' }}
+          value={significant}
+          onChange={(e) => setSignificant(e.target.value)}
+        />
       </DescriptionSection>
-      
-      <DetailButton>쓰레기통 제보</DetailButton>
+
+      <DetailButton onClick={handleSubmit}>쓰레기통 제보</DetailButton>
     </Container>
   );
 };

@@ -4,18 +4,18 @@ import styled, { css } from 'styled-components';
 import axios from 'axios';
 
 const H1 = styled.h2`
-  color: black;
-  font-size: 24px;
+    color: black;
+    font-size: 24px;
 `;
 
 const Container = styled.div`
-  padding: 20px;
-  background-color: #f5f5f5; 
-  padding-bottom: 80px;
+    padding: 20px;
+    background-color: #f5f5f5; 
+    padding-bottom: 80px;
 
-  @media (max-width: 768px) {
-    padding: 10px;
-  }
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
 `;
 
 const Header = styled.div`
@@ -93,31 +93,6 @@ const AdditionalButton = styled.button`
   }
 `;
 
-const AddButton = styled.button`
-  background-color: #FFA500;
-  color: black;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-
-  &:hover {
-    background-color: #FF8C00;
-  }
-
-  @media (max-width: 768px) {
-    width: 35px;
-    height: 35px;
-  }
-`;
-
 const ItemList = styled.div`
   margin-bottom: 20px;
 `;
@@ -130,7 +105,7 @@ const Item = styled.div`
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
+  cursor: pointer;
 
   @media (max-width: 768px) {
     padding: 10px;
@@ -192,21 +167,23 @@ const Footer = styled.div`
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 `;
 
-const BoardList = () => {
+const AdminBoardList = () => {
   const navigate = useNavigate();
   const [boardCategory, setBoardCategory] = useState('ADD'); 
   const [trashCategory, setTrashCategory] = useState('NORMAL'); 
+  const [approvalStatus, setApprovalStatus] = useState('REVIEWING'); 
   const [items, setItems] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYzMzIwLCJleHAiOjE3MzAzNjUzMjB9.SyH8nBBaBDIm7JlH0e-252P0eIEPq33Xo13BWs4POl0'; // 여기에 실제 토큰을 입력하세요
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwNDY2NTI1LCJleHAiOjE3MzA0Njg1MjV9.ZlJ40Z_iVK5MGvH9gZ-5eFUwthJErnGKwke71PCJxig'; // 여기에 실제 토큰을 입력하세요
 
   const fetchItems = useCallback(async (page = 0) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/boards`, {
+      const response = await axios.get(`http://localhost:8080/api/admin/boards`, {
         params: {
           board_category: boardCategory,
           trash_category: trashCategory,
+          approval_status: approvalStatus,
           page: page,
           size: 5
         },
@@ -225,7 +202,7 @@ const BoardList = () => {
     } catch (error) {
       console.error('API 호출 중 오류 발생:', error); 
     }
-  }, [boardCategory, trashCategory, token]);
+  }, [boardCategory, trashCategory, approvalStatus, token]);
 
   useEffect(() => {
     fetchItems(); 
@@ -241,13 +218,27 @@ const BoardList = () => {
     fetchItems();
   };
 
+  const handleApprovalChange = (status) => {
+    setApprovalStatus(status);
+    fetchItems();
+  };
+
   const handlePageChange = (page) => {
     fetchItems(page);
   };
 
+  const handleItemClick = (item) => {
+    const { id } = item;
+    if (boardCategory === 'MODIFY') {
+      navigate(`/admin/modifyBoard/${id}`);
+    } else {
+      navigate(`/admin/ectBoard/${id}`);
+    }
+  };
+
   return (
     <Container>
-      <H1>게시글 목록</H1>
+      <H1>어드민 전용 게시글 목록</H1>
       
       <Header>
         <Button 
@@ -282,9 +273,27 @@ const BoardList = () => {
         </AdditionalButton>
       </AdditionalButtons>
 
+      <AdditionalButtons>
+        <AdditionalButton 
+          onClick={() => handleApprovalChange('REVIEWING')}
+          isSelected={approvalStatus === 'REVIEWING'}>
+          리뷰 중
+        </AdditionalButton>
+        <AdditionalButton 
+          onClick={() => handleApprovalChange('APPROVED')}
+          isSelected={approvalStatus === 'APPROVED'}>
+          승인됨
+        </AdditionalButton>
+        <AdditionalButton 
+          onClick={() => handleApprovalChange('REJECTED')}
+          isSelected={approvalStatus === 'REJECTED'}>
+          거부됨
+        </AdditionalButton>
+      </AdditionalButtons>
+
       <ItemList>
         {items.map((item) => (
-          <Item key={item.id} onClick={() => navigate(`/board/${item.id}`)}> {/* boardId를 넘김 */}
+          <Item key={item.id} onClick={() => handleItemClick(item)}> 
             <Image src={item.boardFirstImgUrl} alt="게시글 이미지" />
             <Description>
               <h4>{item.roadNameAddress}</h4>
@@ -292,10 +301,6 @@ const BoardList = () => {
             </Description>
           </Item>
         ))}
-
-        <AddButton onClick={() => navigate('/boardcreate')}>
-          <ButtonImage src="/images/pencil.png" alt="write" />
-        </AddButton>
       </ItemList>
 
       <Pagination>
@@ -316,4 +321,4 @@ const BoardList = () => {
   );
 };
 
-export default BoardList;
+export default AdminBoardList;
