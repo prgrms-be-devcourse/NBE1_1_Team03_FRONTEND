@@ -31,7 +31,6 @@
   margin-left: 5px;
 }
 
-
 .product-list-container {
   flex-grow: 1;
   overflow-y: auto; /* 상품 목록에 스크롤 적용 */
@@ -49,94 +48,6 @@
   display: flex;
   flex-direction: column;
   gap: 5px; /* 각 상품 간의 간격을 줄임 */
-}
-
-.product-card {
-  display: flex;
-  align-items: flex-start; /* 상단 정렬로 변경 */
-  padding: 10px, 10px;
-  gap: 15px; /* 이미지와 텍스트 사이 간격 조정 */
-  background-color: f8f8fa;
-  height: 100px; /* 카드 높이 조정 */
-  box-sizing: border-box;
-  cursor: pointer; /* 클릭 가능함을 표시 */
-}
-
-.product-info {
-  margin-top: 20px;
-  width: 100%;
-  max-width: 400px;
-  text-align: left;
-  margin-bottom: 20px;
-}
-
-.product-info h2 {
-  margin-top: 15px; /* 상단 마진 추가 */
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0;
-  color: #333;
-  line-height: 1.2;
-  /* 2줄 이상일 때 말줄임표 처리 */
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-}
-
-.product-info p {
-  margin-top: 10px; /* 상단 마진 추가 */
-  font-size: 15px;
-  color: #111;
-  margin: 0;
-  font-weight: bold;
-}
-
-/* 이미지 관련 스타일 */
-.product-image-container {
-  width: 80px !important;
-  height: 80px !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  border-radius: 10px !important;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  background-color: #f8f8f8;
-}
-
-/* 페이지네이션 버튼 스타일 */
-.pagination {
-  margin-top: auto; /* 페이지네이션을 컨테이너의 하단에 고정 */
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 0; /* 페이지네이션 위쪽 마진을 줄임 */
-  background-color: #f8f8fa;
-  padding: 50px 0;
-  position: relative; /* 위치 고정 */
-}
-
-.pagination button {
-  padding: 8px;
-  font-size: 14px; /* 버튼 크기를 줄임 */
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-}
-
-.pagination .active {
-  font-weight: bold;
-  color: red;
 }
 
 /* 하단 네비게이션 바 */
@@ -161,20 +72,4 @@
 .bottom-nav a.active {
   font-weight: bold;
   color: #da1a1d;
-}
-
-/* Pixel 6 Pro 해상도 대응 */
-@media (min-width: 360px) and (max-width: 412px) {
-  .product-image {
-    width: 90px;
-    height: 90px;
-  }
-
-  .product-info h2 {
-    font-size: 18px;
-  }
-
-  .product-info p {
-    font-size: 16px;
-  }
 }

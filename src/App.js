@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Main from './pages/main/Main';
 import TrashcanDetail from './pages/main/TrashcanDetail';
 import Product from './pages/product/Product';
-import ProductDetail from './pages/product/ProductDetail';
+import ProductDetail from './pages/product/detail/ProductDetail';
 import BoardList from './pages/board/BoardList';
 import Board from './pages/board/Board';
 import BoardCreate from './pages/board/BoardCreate';
