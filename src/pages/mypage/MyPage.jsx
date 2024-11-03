@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from './ApiClient'; // 경로는 실제 파일 경로에 맞게 수정
 import './MyPage.css';
 import { useNavigate } from 'react-router-dom';
 import BottomNavigation from '../../components/common/navigation/BottomNavigation';
@@ -8,58 +8,37 @@ const MyPage = () => {
   const [userPoint, setUserPoint] = useState(0);
   const [userInfo, setUserInfo] = useState({ email: '', phone: '', nickname: '' });
   const [gifticons, setGifticons] = useState([]);
+  const [boards, setBoards] = useState([]);
   const navigate = useNavigate();
 
-  // 유저 포인트 및 정보 불러오기
   useEffect(() => {
-    axios.get('http://localhost:8080/api/users/my-page')
-      .then(response => {
-        const data = response.data.data;
-        setUserInfo({
-          email: data.email,
-          phone: data.phone,
-          nickname: data.nickname
-        });
-      })
-      .catch(error => {
-        console.error('유저 정보 불러오기에 실패했습니다:', error);
-      });
+    const fetchData = async () => {
+      try {
+        const userResponse = await apiClient.get('/api/users/my-page');
+        setUserInfo(userResponse.data.data);
 
-    axios.get('http://localhost:8080/api/points/user')
-      .then(response => {
-        setUserPoint(response.data.data.point);
-      })
-      .catch(error => {
-        console.error('포인트 불러오기에 실패했습니다:', error);
-      });
-  }, []);
+        const pointResponse = await apiClient.get('/api/points/user');
+        setUserPoint(pointResponse.data.data.point);
 
-  // 기프티콘 목록 불러오기
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/gifticons/user')
-      .then(response => {
-        setGifticons(response.data.data);
-      })
-      .catch(error => {
-        console.error('기프티콘 목록 불러오기에 실패했습니다:', error);
-      });
-  }, []);
+        const gifticonsResponse = await apiClient.get('/api/gifticons/user');
+        setGifticons(gifticonsResponse.data.data);
 
-    // 게시판 데이터 불러오기
-    useEffect(() => {
-      axios.get('http://localhost:8080/api/boards/my')
-        .then(response => {
-          setBoards(response.data.data.map(board => ({
-            boardFirstImgUrl: board.boardFirstImgUrl,
-            roadNameAddress: board.roadNameAddress,
-            detailedAddress: board.detailedAddress
-          })));
-        })
-        .catch(error => {
-          console.error('게시판 정보 불러오기에 실패했습니다:', error);
-        });
-    }, []);
+        const boardsResponse = await apiClient.get('/api/boards/my');
+        setBoards(boardsResponse.data.data.map(board => ({
+          boardFirstImgUrl: board.boardFirstImgUrl,
+          roadNameAddress: board.roadNameAddress,
+          detailedAddress: board.detailedAddress,
+        })));
+      } catch (error) {
+        console.error('데이터 불러오기에 실패했습니다:', error);
+        if (error.response && error.response.status === 401) {
+          navigate('/login');
+        }
+      }
+    };
 
+    fetchData();
+  }, [navigate]);
   return (
     <div className="screen">
       {/* 헤더 섹션 */}
