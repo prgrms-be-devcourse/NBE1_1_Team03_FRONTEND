@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const apiClient = axios.create({
+const myPageAxios = axios.create({
   baseURL: 'http://localhost:8080',
 });
 
 // 요청 인터셉터
-apiClient.interceptors.request.use(
+myPageAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
 );
 
 // 응답 인터셉터 (토큰 만료 시 갱신 로직 추가)
-apiClient.interceptors.response.use(
+myPageAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response && error.response.status === 401) {
@@ -50,4 +50,4 @@ apiClient.interceptors.response.use(
   }
 );
 
-export default apiClient;
+export default myPageAxios;
