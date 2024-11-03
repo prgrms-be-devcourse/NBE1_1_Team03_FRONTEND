@@ -1,0 +1,21 @@
+.user-info {
+    margin: 0;
+    padding: 0 20px;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  
+  .info-label {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .info-value {
+    font-size: 18px;
+    color: #555;
+  }
+  
