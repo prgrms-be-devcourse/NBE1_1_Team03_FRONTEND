@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import apiClient from './ApiClient'; // 경로는 실제 파일 경로에 맞게 수정
+import myPageAxios from './MyPageAxios'; // 경로는 실제 파일 경로에 맞게 수정
 import './MyPage.css';
 import { useNavigate } from 'react-router-dom';
 import BottomNavigation from '../../components/common/navigation/BottomNavigation';
@@ -14,16 +14,16 @@ const MyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await apiClient.get('/api/users/my-page');
+        const userResponse = await myPageAxios.get('/api/users/my-page');
         setUserInfo(userResponse.data.data);
 
-        const pointResponse = await apiClient.get('/api/points/user');
+        const pointResponse = await myPageAxios.get('/api/points/user');
         setUserPoint(pointResponse.data.data.point);
 
-        const gifticonsResponse = await apiClient.get('/api/gifticons/user');
+        const gifticonsResponse = await myPageAxios.get('/api/gifticons/user');
         setGifticons(gifticonsResponse.data.data);
 
-        const boardsResponse = await apiClient.get('/api/boards/my');
+        const boardsResponse = await myPageAxios.get('/api/boards/my');
         setBoards(boardsResponse.data.data.map(board => ({
           boardFirstImgUrl: board.boardFirstImgUrl,
           roadNameAddress: board.roadNameAddress,
