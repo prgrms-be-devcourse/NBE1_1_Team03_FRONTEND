@@ -25,10 +25,8 @@
   height: 300px; /* Swiper 높이를 설정 */
 }
 
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* 이미지 비율을 유지하면서 이미지 크기를 조정 */
+.product-info {
+  margin-top: 20px;
 }
 
 .product-name {
@@ -48,7 +46,6 @@
   max-width: 400px;
   background-color: #BDBDBD;
   margin-bottom: 200px; /* 버튼 위에 여백 추가 */
-
   color: #000;
   border: none;
   border-radius: 6px;
@@ -61,12 +58,4 @@
 
 .purchase-button:hover {
   background-color: #A0A0A0;
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 18px;
 }
