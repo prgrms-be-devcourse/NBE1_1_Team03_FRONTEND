@@ -199,7 +199,7 @@ const BoardList = () => {
   const [items, setItems] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYzMzIwLCJleHAiOjE3MzAzNjUzMjB9.SyH8nBBaBDIm7JlH0e-252P0eIEPq33Xo13BWs4POl0'; // 여기에 실제 토큰을 입력하세요
+  const token = localStorage.getItem('accessToken');
 
   const fetchItems = useCallback(async (page = 0) => {
     try {
@@ -253,7 +253,7 @@ const BoardList = () => {
         <Button 
           onClick={() => handleTrashChange('NORMAL')}
           isSelected={trashCategory === 'NORMAL'}>
-          <ButtonImage src="/images/trashcan.png" alt="일반 쓰레기통" />
+          <ButtonImage src= "/images/trashcan.png" alt="일반 쓰레기통" />
           일반 쓰레기통
         </Button>
         <Button 
@@ -284,7 +284,7 @@ const BoardList = () => {
 
       <ItemList>
         {items.map((item) => (
-          <Item key={item.id} onClick={() => navigate(`/board/${item.id}`)}> {/* boardId를 넘김 */}
+          <Item key={item.id} onClick={() => navigate(`/board/${item.id}`)}> 
             <Image src={item.boardFirstImgUrl} alt="게시글 이미지" />
             <Description>
               <h4>{item.roadNameAddress}</h4>
@@ -308,9 +308,9 @@ const BoardList = () => {
 
       <Footer>
         <Button onClick={() => navigate('/main')}>메인</Button>
-        <Button onClick={() => navigate('/boardList')} isSelected={true}>게시판</Button>
+        <Button onClick={() => navigate('/boardList')} isSelected={true}>게시판 목록</Button>
         <Button onClick={() => navigate('/products')}>상품</Button>
-        <Button onClick={() => navigate('/my')}>마이</Button>
+        <Button onClick={() => navigate('/mypage')}>마이 페이지</Button>
       </Footer>
     </Container>
   );
