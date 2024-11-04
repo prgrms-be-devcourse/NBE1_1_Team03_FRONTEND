@@ -174,8 +174,7 @@ const AdminBoardList = () => {
   const [approvalStatus, setApprovalStatus] = useState('REVIEWING'); 
   const [items, setItems] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwNDY2NTI1LCJleHAiOjE3MzA0Njg1MjV9.ZlJ40Z_iVK5MGvH9gZ-5eFUwthJErnGKwke71PCJxig'; // 여기에 실제 토큰을 입력하세요
+  const token = localStorage.getItem('accessToken');
 
   const fetchItems = useCallback(async (page = 0) => {
     try {
@@ -315,7 +314,7 @@ const AdminBoardList = () => {
         <Button onClick={() => navigate('/main')}>메인</Button>
         <Button onClick={() => navigate('/boardList')} isSelected={true}>게시판</Button>
         <Button onClick={() => navigate('/products')}>상품</Button>
-        <Button onClick={() => navigate('/my')}>마이</Button>
+        <Button onClick={() => navigate('/mypage')}>마이</Button>
       </Footer>
     </Container>
   );

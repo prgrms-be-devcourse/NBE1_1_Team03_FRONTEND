@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import axios from 'axios';
@@ -130,11 +131,12 @@ const Spacer = styled.div`
 `;
 
 const AdminModifyBoard = () => {
+    const navigate = useNavigate();
     const { boardId } = useParams();
     const [boardData, setBoardData] = useState(null);
     const [points, setPoints] = useState('');
     const [chosenImgUrl, setChosenImgUrl] = useState(null); 
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwNDY2NTI1LCJleHAiOjE3MzA0Njg1MjV9.ZlJ40Z_iVK5MGvH9gZ-5eFUwthJErnGKwke71PCJxig'; // 여기에 실제 토큰을 입력하세요
+    const token = localStorage.getItem('accessToken');
 
     useEffect(() => {
         const fetchBoardData = async () => {
@@ -242,6 +244,7 @@ const AdminModifyBoard = () => {
 
             if (response.data.code === 200) {
                 alert('요청이 성공적으로 처리되었습니다.');
+                navigate('/admin/boardList')
             } else {
                 alert(`오류: ${response.data.message}`);
             }

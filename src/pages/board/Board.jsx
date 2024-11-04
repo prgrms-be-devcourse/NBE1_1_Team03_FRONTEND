@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -99,7 +100,21 @@ const CommentHeader = styled.div`
   color: #333;
 `;
 
-const Footer = styled.div`
+const CommentDeleteButton = styled.button`
+  background-color: #ff4d4d; 
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5vw;
+  padding: 0.5% 1%;
+  
+  &:hover {
+    background-color: #ff1a1a;
+  }
+`;
+
+const CommentInputSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -107,7 +122,7 @@ const Footer = styled.div`
   padding: 2%;
 `;
 
-const FooterInput = styled.input`
+const CommentInput = styled.input`
   padding: 2%;
   flex-grow: 1;
   margin-right: 2%;
@@ -126,12 +141,48 @@ const RegisterButton = styled.button`
   font-size: 2vw;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 2% 0;
+`;
+
+const DeleteButton = styled.button`
+  flex: 1; 
+  padding: 1.5% 0; 
+  background-color: #ff4d4d; 
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 2vw;
+  margin-right: 1%; 
+  min-width: 120px; 
+
+  &:hover {
+    background-color: #ff1a1a;
+  }
+
+  &:last-child {
+    margin-right: 0; 
+  }
+`;
+
+const EditButton = styled(DeleteButton)`
+  background-color: #87ceeb; 
+  
+  &:hover {
+    background-color: #5bc0de; 
+  }
+`;
+
 const Board = () => {
+  const navigate = useNavigate();
   const { boardId } = useParams();
   const [boardData, setBoardData] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYxMTg3LCJleHAiOjE3MzAzNjMxODd9.hWntZPkswUQDU-sd-g2J9hAyF4mLz1mZkN4Av1qVp7M'; // 여기에 실제 토큰을 입력하세요
+  const token = localStorage.getItem('accessToken');
 
   const fetchComments = useCallback(async () => {
     try {
@@ -161,7 +212,7 @@ const Board = () => {
 
       if (response.data.code === 200) {
         setBoardData(response.data.data);
-        fetchComments(); // 댓글 fetching 호출
+        fetchComments(); 
       } else {
         console.error('게시글 데이터 조회 오류:', response.data.message);
       }
@@ -169,6 +220,25 @@ const Board = () => {
       console.error('데이터 로딩 중 오류 발생:', error);
     }
   }, [boardId, fetchComments, token]);
+
+  const deleteBoard = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/boards/${boardId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.code === 200) {
+        alert(response.data.message);
+        navigate('/boardList');
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert('에러 발생');
+    } 
+  }
 
   const addComment = async () => {
     try {
@@ -182,8 +252,8 @@ const Board = () => {
       });
 
       if (response.data.code === 201) {
-        setComments([...comments, response.data.data]);
         setNewComment('');
+        fetchComments();
       } else {
         console.error('댓글 생성 오류:', response.data.message);
       }
@@ -191,6 +261,24 @@ const Board = () => {
       console.error('댓글 추가 중 오류 발생:', error);
     }
   };
+
+  const delteComment = async (commentId) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.code === 200) {
+        fetchComments();
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert('에러 발생');
+    } 
+  }
 
   useEffect(() => {
     fetchBoardData();
@@ -244,20 +332,35 @@ const Board = () => {
               {comment.nickname} ({comment.authority})
             </CommentHeader>
             <div>{comment.content}</div>
+            {comment.isAuthor && (
+              <>
+                <CommentDeleteButton onClick={() => delteComment(comment.id)}> 삭제 </CommentDeleteButton>
+              </>
+            )}
           </Comment>
         )) : (
           <Comment>댓글이 없습니다.</Comment>
         )}
       </CommentSection>
-      <Footer>
-        <FooterInput 
+
+      <CommentInputSection>
+        <CommentInput 
           type="text" 
           placeholder="댓글 내용" 
           value={newComment} 
           onChange={(e) => setNewComment(e.target.value)} 
         />
         <RegisterButton onClick={addComment}>등록</RegisterButton>
-      </Footer>
+      </CommentInputSection>
+
+      <ButtonContainer>
+        {boardData.isAuthor && ( 
+          <>
+            <DeleteButton onClick={deleteBoard}> 게시글 삭제하기 </DeleteButton>
+            <EditButton onClick={() => navigate(`/boardEdit/${boardId}`)}> 게시글 수정하기 </EditButton>
+          </>)
+        }
+      </ButtonContainer>
     </Container>
   );
 };

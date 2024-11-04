@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import axios from 'axios';
@@ -28,6 +29,11 @@ const Title = styled.h1`
 const Address = styled.p`
     font-size: 14px;
     color: #666;
+`;
+
+const ApprovalInfo = styled.p`
+    font-size: 24px;
+    margin: 0;
 `;
 
 const ImageSlider = styled(Slider)`
@@ -130,11 +136,12 @@ const Spacer = styled.div`
 `;
 
 const AdminEctBoard = () => {
+    const navigate = useNavigate();
     const { boardId } = useParams();
     const [boardData, setBoardData] = useState(null);
     const [points, setPoints] = useState('');
     const [chosenImgUrl, setChosenImgUrl] = useState(null); 
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwNDY2NTI1LCJleHAiOjE3MzA0Njg1MjV9.ZlJ40Z_iVK5MGvH9gZ-5eFUwthJErnGKwke71PCJxig';
+    const token = localStorage.getItem('accessToken');
 
     useEffect(() => {
         const fetchBoardData = async () => {
@@ -242,6 +249,7 @@ const AdminEctBoard = () => {
 
             if (response.data.code === 200) {
                 alert('요청이 성공적으로 처리되었습니다.');
+                navigate('/admin/boardList')
             } else {
                 alert(`오류: ${response.data.message}`);
             }
@@ -254,6 +262,7 @@ const AdminEctBoard = () => {
         <Container>
             <Title>{boardData.roadNameAddress || '고덕로 80길 99'}</Title>
             <Address>{boardData.detailedAddress || '상세 주소 : 고덕센트럴아이파크 후문'}</Address>
+            <ApprovalInfo>게시글 승인 상태: {boardData.approvalStatus}</ApprovalInfo>
             <SectionTitle>게시글 사진들</SectionTitle>
             <ImageSlider {...{ dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 }}>
                 {boardData.images.map((img, index) => (
