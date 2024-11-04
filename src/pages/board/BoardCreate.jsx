@@ -103,7 +103,7 @@ const BoardCreate = () => {
   const [updatedTrashcanStatus, setUpdatedTrashcanStatus] = useState("FULL");
   const [boardCategory, setBoardCategory] = useState("");
 
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImVtYWlsIjoiaHVuaWwxMjM0QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IkFETUlOIiwiaWF0IjoxNzMwMzYzNTY3LCJleHAiOjE3MzAzNjU1Njd9.-jBn7nv6_CvIfqXMvGI0q3hVsaEhCZbq-HPWp44K3sI';
+  const token = localStorage.getItem('accessToken');
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -122,14 +122,6 @@ const BoardCreate = () => {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    console.log(boardCategory);
-    console.log(significant);
-    console.log(latitude);
-    console.log(longitude);
-    console.log(roadNameAddress);
-    console.log(detailedAddress);
-    console.log(trashCategory);
-    console.log(updatedTrashcanStatus);
     formData.append('data', new Blob([JSON.stringify({
       boardCategory,
       significant,
@@ -151,11 +143,9 @@ const BoardCreate = () => {
           'Authorization': `Bearer ${token}`,
         },
       });
-      console.log(response.data);
       alert(response.data.message);
-      navigate('/success');
+      navigate('/boardList');
     } catch (error) {
-      console.error(error);
       alert('제출 실패!');
     }
   };
@@ -163,19 +153,6 @@ const BoardCreate = () => {
   return (
     <Container>
       <Title>신고 작성 페이지</Title>
-
-      <SectionTitle>게시글 유형을 선택해주세요.</SectionTitle>
-      <ButtonContainer>
-        <Button onClick={() => setBoardCategory("ADD")} selected={boardCategory === "ADD"}>신규 등록</Button>
-        <Button onClick={() => setBoardCategory("MODIFY")} selected={boardCategory === "MODIFY"}>수정</Button>
-        <Button onClick={() => setBoardCategory("REMOVE")} selected={boardCategory === "REMOVE"}>삭제</Button>
-      </ButtonContainer>
-
-      <SectionTitle>쓰레기통 유형을 선택해 주세요.</SectionTitle>
-      <ButtonContainer>
-        <Button onClick={() => setTrashCategory("NORMAL")} selected={trashCategory === "NORMAL"}>일반 쓰레기통</Button>
-        <Button onClick={() => setTrashCategory("CIGARETTE")} selected={trashCategory === "CIGARETTE"}>재떨이</Button>
-      </ButtonContainer>
 
       <AddressSection onClick={() => navigate('/boardmap')}>
         <p>여기를 누르면 지도가 나옵니다. 지도에 마커를 찍어 장소를 추가해 주세요.</p>
@@ -201,6 +178,19 @@ const BoardCreate = () => {
           ))}
         </div>
       </ImagePlaceholder>
+
+      <SectionTitle>게시글 유형을 선택해주세요.</SectionTitle>
+      <ButtonContainer>
+        <Button onClick={() => setBoardCategory("ADD")} selected={boardCategory === "ADD"}>신규 등록</Button>
+        <Button onClick={() => setBoardCategory("MODIFY")} selected={boardCategory === "MODIFY"}>수정</Button>
+        <Button onClick={() => setBoardCategory("REMOVE")} selected={boardCategory === "REMOVE"}>삭제</Button>
+      </ButtonContainer>
+
+      <SectionTitle>쓰레기통 유형을 선택해 주세요.</SectionTitle>
+      <ButtonContainer>
+        <Button onClick={() => setTrashCategory("NORMAL")} selected={trashCategory === "NORMAL"}>일반 쓰레기통</Button>
+        <Button onClick={() => setTrashCategory("CIGARETTE")} selected={trashCategory === "CIGARETTE"}>재떨이</Button>
+      </ButtonContainer>
 
       <SectionTitle>쓰레기통 상태를 선택해 주세요.</SectionTitle>
       <ButtonContainer>
