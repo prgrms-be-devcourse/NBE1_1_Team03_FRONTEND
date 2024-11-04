@@ -18,7 +18,6 @@ html, body {
   justify-content: space-between;
 }
 
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -53,12 +52,38 @@ html, body {
   font-weight: bold;
 }
 
-.edit-button {
-  padding: 5px 10px;
-  background-color: #e0e0e0;
+/* 버튼 그룹 스타일 */
+.button-group {
+  display: flex;
+  flex-direction: column; /* 버튼을 수직으로 배치 */
+  align-items: flex-end; /* 버튼을 오른쪽 정렬 */
+  gap: 10px; /* 버튼 사이의 간격 추가 */
+  margin-top: 10px; /* 버튼 그룹 위쪽 마진 추가 */
+}
+
+.action-button {
+  padding: 10px; /* 버튼 내부 여백 */
+  background-color: #e0e0e0; /* 버튼 배경색 */
   border: none;
   border-radius: 5px;
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
+  width: 100%; /* 버튼 너비를 100%로 설정 */
+}
+
+.action-button:hover {
+  background-color: #d0d0d0; /* 마우스 오버 시 색상 변경 */
+}
+
+/* 로딩 메시지 스타일 */
+.loading {
+  font-size: 18px;
+  color: #666;
+}
+
+/* 오류 메시지 스타일 */
+.error-message {
+  color: red;
+  font-weight: bold;
 }

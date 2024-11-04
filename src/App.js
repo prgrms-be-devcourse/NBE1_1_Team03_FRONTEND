@@ -9,6 +9,7 @@ import Board from './pages/board/Board';
 import BoardCreate from './pages/board/BoardCreate';
 import BoardMap from './pages/board/BoardMap';
 import MyPage from './pages/mypage/MyPage';
+import ChatbotPage from './pages/mypage/chatbot/ChatbotPage';
 import UpdateInfoPage from './pages/update/UpdateInfoPage';
 import UpdateNamePage from './pages/update/UpdateNamePage';
 import UpdatePhonePage from './pages/update/UpdatePhonePage';
@@ -21,6 +22,7 @@ import FindPasswordPage from './pages/auth/FindPasswordPage';
 import AdminBoardList from "./pages/admin/AdminBoardList";
 import AdminEctBoard from "./pages/admin/AdminEctBoard";
 import AdminModifyBoard from "./pages/admin/AdminModifyBoard";
+
 
 function App() {
   return (
@@ -47,6 +49,7 @@ function App() {
         <Route path="/admin/boardList" element={<AdminBoardList />} />
         <Route path="/admin/ectBoard/:boardId" element={<AdminEctBoard/> } />
         <Route path="/admin/modifyBoard/:boardId" element={<AdminModifyBoard/> } />
+        <Route path="/chatbot" element={<ChatbotPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
