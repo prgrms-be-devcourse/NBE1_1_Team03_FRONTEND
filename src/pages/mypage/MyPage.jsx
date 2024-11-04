@@ -69,7 +69,10 @@ const MyPage = () => {
               <h1>보유 포인트</h1>
               <span className="point">{userPoint}</span>
             </div>
-            <button className="edit-button" onClick={() => navigate('/update')}>정보 수정</button>
+            <div className="button-group">
+              <button className="action-button" onClick={() => navigate('/update')}>정보 수정</button>
+              <button className="action-button" onClick={() => navigate('/chatbot')}>챗봇</button>
+            </div>
           </div>
 
           <UserInfo userInfo={userInfo} />

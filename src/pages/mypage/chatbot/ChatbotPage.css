@@ -1,0 +1,12 @@
+/* src/pages/product/ChatbotPage.css */
+.chatbot-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .chatbot-response {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
