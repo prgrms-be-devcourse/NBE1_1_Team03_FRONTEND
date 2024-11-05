@@ -8,6 +8,7 @@ import BoardList from './pages/board/BoardList';
 import Board from './pages/board/Board';
 import BoardCreate from './pages/board/BoardCreate';
 import BoardMap from './pages/board/BoardMap';
+import BoardModify from "./pages/board/BoardModify";
 import MyPage from './pages/mypage/MyPage';
 import UpdateInfoPage from './pages/update/UpdateInfoPage';
 import UpdateNamePage from './pages/update/UpdateNamePage';
@@ -21,6 +22,7 @@ import FindPasswordPage from './pages/auth/FindPasswordPage';
 import AdminBoardList from "./pages/admin/AdminBoardList";
 import AdminEctBoard from "./pages/admin/AdminEctBoard";
 import AdminModifyBoard from "./pages/admin/AdminModifyBoard";
+import BoardMapECT from "./pages/board/BoardMapECT";
 
 function App() {
   return (
@@ -30,10 +32,12 @@ function App() {
         <Route path="/trashcan-detail" element={<TrashcanDetail />} />
         <Route path="/products" element={<Product />} />
         <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/boardList" element={<BoardList />} />
+        <Route path="/boardlist" element={<BoardList />} />
         <Route path="/board/:boardId" element={<Board />} />
         <Route path="/boardcreate" element={<BoardCreate />} />
         <Route path="/boardmap" element={<BoardMap />} />
+        <Route path="/boardmodify/:boardId" element={<BoardModify />} />
+        <Route path="/boardmap-ect" element={<BoardMapECT />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/update" element={<UpdateInfoPage />} />
         <Route path="/update-name" element={<UpdateNamePage />} />
