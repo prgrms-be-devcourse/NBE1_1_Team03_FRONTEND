@@ -68,7 +68,7 @@ const InfoSection = styled.div`
 const InfoItemContainer = styled.div`
     display: flex;
     margin: 5px 0;
-    align-items: center;
+    align-items: center; 
 `;
 
 const InfoTitle = styled.div`
@@ -244,7 +244,7 @@ const AdminModifyBoard = () => {
 
             if (response.data.code === 200) {
                 alert('요청이 성공적으로 처리되었습니다.');
-                navigate('/admin/boardList')
+                navigate('/admin/boardList');
             } else {
                 alert(`오류: ${response.data.message}`);
             }
@@ -263,6 +263,26 @@ const AdminModifyBoard = () => {
                 <Image src={boardData.trashcanImgUrl} alt="기존 쓰레기통 사진" />
             </ImageBox>
 
+            <SectionTitle>게시글 사진들</SectionTitle>
+            {boardData.boardImgUrls.length > 1 ? (
+                <ImageSlider {...{ dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 }}>
+                    {boardData.boardImgUrls.map((img, index) => (
+                        <ImageBox 
+                            key={index} 
+                            onClick={() => setChosenImgUrl(img)}
+                            isSelected={chosenImgUrl === img}>
+                            <Image src={img} alt={`게시글 이미지 ${index + 1}`} />
+                        </ImageBox>
+                    ))}
+                </ImageSlider>
+            ) : (
+                <ImageBox 
+                    onClick={() => setChosenImgUrl(boardData.boardImgUrls[0])}
+                    isSelected={chosenImgUrl === boardData.boardImgUrls[0]}>
+                    <Image src={boardData.boardImgUrls[0]} alt="게시글 이미지" />
+                </ImageBox>
+            )}
+
             <SectionTitle>기존 쓰레기통 정보</SectionTitle>
             <InfoSection>
                 <InfoItemContainer>
@@ -274,18 +294,6 @@ const AdminModifyBoard = () => {
                     <InfoItem>{getTrashcanStatus(boardData.trashcanStatus)}</InfoItem>
                 </InfoItemContainer>
             </InfoSection>
-
-            <SectionTitle>게시글 사진들</SectionTitle>
-            <ImageSlider {...{ dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 }}>
-                {boardData.boardImgUrls.map((img, index) => (
-                    <ImageBox 
-                        key={index} 
-                        onClick={() => setChosenImgUrl(img)}
-                        isSelected={chosenImgUrl === img}>
-                        <Image src={img} alt={`게시글 이미지 ${index + 1}`} />
-                    </ImageBox>
-                ))}
-            </ImageSlider>
 
             <SectionTitle>게시글 쓰레기통 정보</SectionTitle>
             <InfoSection>
