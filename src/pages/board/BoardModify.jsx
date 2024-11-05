@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -10,6 +11,30 @@ const Container = styled.div`
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const ImagePlaceholder = styled.div`
+  border: 2px dashed #87ceeb;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+  position: relative;
+  max-height: 150px;
+  overflow-y: auto;
+`;
+
+const PlusImg = styled.div`
+  font-size: 30px; 
+  color: #87ceeb;
+  margin-left: 10px;
+  cursor: pointer;
+`;
+
+const FileInput = styled.input`
+  margin-right: 10px;
 `;
 
 const Title = styled.h1`
@@ -40,32 +65,11 @@ const Button = styled.button`
   }
 `;
 
-const AddressSection = styled.div`
-  background-color: #e0e0e0;
-  padding: 15px;
+const InfoSection = styled.div`
+  margin-bottom: 20px;
+  background-color: #f1f1f1;
+  padding: 10px;
   border-radius: 5px;
-  margin-bottom: 20px;
-  cursor: pointer; 
-`;
-
-const ImagePlaceholder = styled.div`
-  border: 2px dashed #87ceeb;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 20px;
-  position: relative;
-  max-height: 150px;
-  overflow-y: auto;
-`;
-
-const PlusImg = styled.div`
-  font-size: 30px; 
-  color: #87ceeb;
-  margin-left: 10px;
-  cursor: pointer;
 `;
 
 const SectionTitle = styled.p`
@@ -82,27 +86,14 @@ const DetailButton = styled(Button)`
   color: white;
 `;
 
-const InfoSection = styled.div`
-  margin-bottom: 20px;
-  background-color: #f1f1f1;
-  padding: 10px;
-  border-radius: 5px;
-`;
-
-const FileInput = styled.input`
-  margin-right: 10px;
-`;
-
-const BoardCreate = () => {
+const BoardModify = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { trashcanId, latitude, longitude, roadNameAddress, detailedAddress } = location.state || {};
-
-  const [files, setFiles] = useState([]);
+  const { boardId } = useParams();
+  const [boardData, setBoardData] = useState({});
   const [significant, setSignificant] = useState("");
   const [trashCategory, setTrashCategory] = useState("NORMAL");
   const [updatedTrashcanStatus, setUpdatedTrashcanStatus] = useState("FULL");
-  const [boardCategory, setBoardCategory] = useState("");
+  const [files, setFiles] = useState([]);
 
   const token = localStorage.getItem('accessToken');
 
@@ -120,27 +111,46 @@ const BoardCreate = () => {
     document.getElementById('file-inputs').appendChild(newInput);
   };
 
+  const fetchBoardData = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/boards/location/${boardId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      if (response.data.code === 200) {
+        setBoardData(response.data.data);
+        
+        setSignificant(response.data.data.significant || "");
+        setTrashCategory(response.data.data.trashCategory || "NORMAL");
+        setUpdatedTrashcanStatus(response.data.data.updatedTrashcanStatus || "FULL");
+      } else {
+        console.error('게시글 데이터 조회 오류:', response.data.message);
+      }
+    } catch (error) {
+      console.error('데이터 로딩 중 오류 발생:', error);
+    }
+  }, [boardId, token]);
+
   const handleSubmit = async () => {
     const formData = new FormData();
-
     formData.append('data', new Blob([JSON.stringify({
-      boardCategory,
       significant,
-      trashcanId,
-      latitude,
-      longitude,
-      roadNameAddress,
-      detailedAddress,
+      latitude: boardData.latitude, 
+      longitude: boardData.longitude, 
+      roadNameAddress: boardData.roadNameAddress, 
+      detailedAddress: boardData.detailedAddress, 
       trashCategory,
       updatedTrashcanStatus
     })], { type: 'application/json' }));
 
     files.forEach(file => {
-      formData.append('files', file);
-    });
+        formData.append('files', file);
+      });
 
     try {
-      const response = await axios.post('http://localhost:8080/api/boards', formData, {
+      const response = await axios.patch(`http://localhost:8080/api/boards/${boardId}`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -148,40 +158,24 @@ const BoardCreate = () => {
       alert(response.data.message);
       navigate('/boardList');
     } catch (error) {
-      alert('제출 실패!');
+      alert('수정 실패!');
     }
   };
 
-  
-  const handleAddressClick = () => {
-    if (boardCategory === "ADD") {
-      navigate('/boardmap');
-    } else {
-      navigate('/boardmap-ect');
-    }
-  };
+  useEffect(() => {
+    fetchBoardData();
+  }, [fetchBoardData]);
 
   return (
     <Container>
-      <Title>신고 작성 페이지</Title>
-
-      <SectionTitle>게시글 유형을 선택해주세요.</SectionTitle>
-      <ButtonContainer>
-        <Button onClick={() => setBoardCategory("ADD")} selected={boardCategory === "ADD"}>신규 등록</Button>
-        <Button onClick={() => setBoardCategory("MODIFY")} selected={boardCategory === "MODIFY"}>수정</Button>
-        <Button onClick={() => setBoardCategory("REMOVE")} selected={boardCategory === "REMOVE"}>삭제</Button>
-      </ButtonContainer>
-      
-      <AddressSection onClick={handleAddressClick}>
-        <p>여기를 누르면 지도가 나오니 마커를 찍어주세요. </p>
-      </AddressSection>
+      <Title>신고 수정 페이지</Title>
 
       <InfoSection>
         <SectionTitle>선택된 위치 정보</SectionTitle>
-        <p>도로명 주소: {roadNameAddress || '주소 없음'}</p>
-        <p>지번 주소: {detailedAddress || '주소 없음'}</p>
-        <p>위도: {latitude || '정보 없음'}</p>
-        <p>경도: {longitude || '정보 없음'}</p>
+        <p>도로명 주소: {boardData.roadNameAddress || '주소 없음'}</p>
+        <p>지번 주소: {boardData.detailedAddress || '주소 없음'}</p>
+        <p>위도: {boardData.latitude || '정보 없음'}</p>
+        <p>경도: {boardData.longitude || '정보 없음'}</p>
       </InfoSection>
 
       <ImagePlaceholder>
@@ -217,12 +211,13 @@ const BoardCreate = () => {
           style={{ width: '93%', borderRadius: '5px', border: '1px solid #ccc', padding: '10px' }}
           value={significant}
           onChange={(e) => setSignificant(e.target.value)}
+          placeholder="특이사항을 입력하세요"
         />
       </DescriptionSection>
 
-      <DetailButton onClick={handleSubmit}>쓰레기통 제보</DetailButton>
+      <DetailButton onClick={handleSubmit}>쓰레기통 수정</DetailButton>
     </Container>
   );
 };
 
-export default BoardCreate;
+export default BoardModify;

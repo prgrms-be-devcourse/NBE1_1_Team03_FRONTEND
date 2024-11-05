@@ -73,7 +73,7 @@ const InfoSection = styled.div`
 const InfoItemContainer = styled.div`
     display: flex;
     margin: 5px 0;
-    align-items: center;
+    align-items: center; 
 `;
 
 const InfoTitle = styled.div`
@@ -264,18 +264,26 @@ const AdminEctBoard = () => {
             <Address>{boardData.detailedAddress || '상세 주소 : 고덕센트럴아이파크 후문'}</Address>
             <ApprovalInfo>게시글 승인 상태: {boardData.approvalStatus}</ApprovalInfo>
             <SectionTitle>게시글 사진들</SectionTitle>
-            <ImageSlider {...{ dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 }}>
-                {boardData.images.map((img, index) => (
-                    <ImageBox 
-                        key={index} 
-                        onClick={() => setChosenImgUrl(img.boardImgUrl)}
-                        isSelected={chosenImgUrl === img.boardImgUrl}>
-                        <Image src={img.boardImgUrl} alt={`게시글 이미지 ${index + 1}`} />
-                    </ImageBox>
-                ))}
-            </ImageSlider>
+            {boardData.images.length > 1 ? (
+                <ImageSlider {...{ dots: true, infinite: true, speed: 500, slidesToShow: 1, slidesToScroll: 1 }}>
+                    {boardData.images.map((img, index) => (
+                        <ImageBox 
+                            key={index} 
+                            onClick={() => setChosenImgUrl(img.boardImgUrl)}
+                            isSelected={chosenImgUrl === img.boardImgUrl}>
+                            <Image src={img.boardImgUrl} alt={`게시글 이미지 ${index + 1}`} />
+                        </ImageBox>
+                    ))}
+                </ImageSlider>
+            ) : (
+                <ImageBox 
+                    onClick={() => setChosenImgUrl(boardData.images[0].boardImgUrl)}
+                    isSelected={chosenImgUrl === boardData.images[0].boardImgUrl}>
+                    <Image src={boardData.images[0].boardImgUrl} alt="게시글 이미지" />
+                </ImageBox>
+            )}
 
-        <SectionTitle>게시글 쓰레기통 정보</SectionTitle>
+            <SectionTitle>게시글 쓰레기통 정보</SectionTitle>
             <InfoSection>
                 <InfoItemContainer>
                     <InfoTitle>게시글 유형</InfoTitle>
@@ -293,25 +301,25 @@ const AdminEctBoard = () => {
                 </InfoItemContainer>
             </InfoSection>
 
-        <SectionTitle>특이사항</SectionTitle>
+            <SectionTitle>특이사항</SectionTitle>
             <InfoSection>
                 <InfoItem>{boardData.significant || '정보를 불러오는 중...'}</InfoItem>
             </InfoSection>
 
-        <PointsContainer>
-            <PointsInput 
-                type="number" 
-                value={points} 
-                onChange={(e) => setPoints(e.target.value)} 
-                placeholder="포인트 수" /> Points <Spacer />
-            <Button onClick={handlePointAllocation}>지급</Button>
-        </PointsContainer>
+            <PointsContainer>
+                <PointsInput 
+                    type="number" 
+                    value={points} 
+                    onChange={(e) => setPoints(e.target.value)} 
+                    placeholder="포인트 수" /> Points <Spacer />
+                <Button onClick={handlePointAllocation}>지급</Button>
+            </PointsContainer>
 
-        <Footer>
-            <Button onClick={() => handleApproval('APPROVED')}>반영</Button>
-            <Spacer />
-            <Button onClick={() => handleApproval('REJECTED')}>기각</Button>
-        </Footer>
+            <Footer>
+                <Button onClick={() => handleApproval('APPROVED')}>반영</Button>
+                <Spacer />
+                <Button onClick={() => handleApproval('REJECTED')}>기각</Button>
+            </Footer>
         </Container>
     );
 };

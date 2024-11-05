@@ -286,7 +286,7 @@ const Board = () => {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: boardData.boardImgs && boardData.boardImgs.length > 1, // 여러 장일 때만 슬라이드 가능
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -297,11 +297,13 @@ const Board = () => {
       <Header>{boardData.roadNameAddress || '주소를 불러오는 중...'}</Header>
       <Address>{boardData.detailedAddress || '상세주소를 불러오는 중...'}</Address>
       <ImageSlider {...settings}>
-        {boardData.boardImgs ? boardData.boardImgs.map((img, index) => (
-          <ImageBox key={index}>
-            <Image src={img.boardImgUrl} alt={`게시글 이미지 ${index + 1}`} />
-          </ImageBox>
-        )) : (
+        {boardData.boardImgs && boardData.boardImgs.length > 0 ? (
+          boardData.boardImgs.map((img, index) => (
+            <ImageBox key={index}>
+              <Image src={img.boardImgUrl} alt={`게시글 이미지 ${index + 1}`} />
+            </ImageBox>
+          ))
+        ) : (
           <ImageBox>
             <Image src="placeholder1.jpg" alt="사진 1" />
           </ImageBox>
@@ -333,9 +335,7 @@ const Board = () => {
             </CommentHeader>
             <div>{comment.content}</div>
             {comment.isAuthor && (
-              <>
-                <CommentDeleteButton onClick={() => delteComment(comment.id)}> 삭제 </CommentDeleteButton>
-              </>
+              <CommentDeleteButton onClick={() => delteComment(comment.id)}> 삭제 </CommentDeleteButton>
             )}
           </Comment>
         )) : (
@@ -357,9 +357,9 @@ const Board = () => {
         {boardData.isAuthor && ( 
           <>
             <DeleteButton onClick={deleteBoard}> 게시글 삭제하기 </DeleteButton>
-            <EditButton onClick={() => navigate(`/boardEdit/${boardId}`)}> 게시글 수정하기 </EditButton>
-          </>)
-        }
+            <EditButton onClick={() => navigate(`/boardmodify/${boardId}`)}> 게시글 수정하기 </EditButton>
+          </>
+        )}
       </ButtonContainer>
     </Container>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
+import BottomNavigation from '../../components/common/navigation/BottomNavigation';
 
 const H1 = styled.h2`
     color: black;
@@ -154,19 +155,6 @@ const PageButton = styled.button`
   }
 `;
 
-const Footer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #f5f5f5; 
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-`;
-
 const AdminBoardList = () => {
   const navigate = useNavigate();
   const [boardCategory, setBoardCategory] = useState('ADD'); 
@@ -310,12 +298,7 @@ const AdminBoardList = () => {
         ))}
       </Pagination>
 
-      <Footer>
-        <Button onClick={() => navigate('/main')}>메인</Button>
-        <Button onClick={() => navigate('/boardList')} isSelected={true}>게시판</Button>
-        <Button onClick={() => navigate('/products')}>상품</Button>
-        <Button onClick={() => navigate('/mypage')}>마이</Button>
-      </Footer>
+      <BottomNavigation/>
     </Container>
   );
 };

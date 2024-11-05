@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
+import BottomNavigation from '../../components/common/navigation/BottomNavigation';
 
 const H1 = styled.h2`
   color: black;
@@ -118,6 +119,27 @@ const AddButton = styled.button`
   }
 `;
 
+const AdminButton = styled.button`
+  background-color: #D9D9D9;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-right: 5px;
+  min-width: 120px;
+
+  &:hover {
+    background-color: #4C4C4C;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+`;
+
 const ItemList = styled.div`
   margin-bottom: 20px;
 `;
@@ -130,8 +152,8 @@ const Item = styled.div`
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
-
+  cursor: pointer; 
+  
   @media (max-width: 768px) {
     padding: 10px;
   }
@@ -177,19 +199,6 @@ const PageButton = styled.button`
   @media (max-width: 768px) {
     font-size: 14px;
   }
-`;
-
-const Footer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #f5f5f5; 
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const BoardList = () => {
@@ -291,7 +300,7 @@ const BoardList = () => {
               <p>{item.detailedAddress}</p>
             </Description>
           </Item>
-        ))}
+        ))} 
 
         <AddButton onClick={() => navigate('/boardcreate')}>
           <ButtonImage src="/images/pencil.png" alt="write" />
@@ -306,12 +315,11 @@ const BoardList = () => {
         ))}
       </Pagination>
 
-      <Footer>
-        <Button onClick={() => navigate('/main')}>메인</Button>
-        <Button onClick={() => navigate('/boardList')} isSelected={true}>게시판 목록</Button>
-        <Button onClick={() => navigate('/products')}>상품</Button>
-        <Button onClick={() => navigate('/mypage')}>마이 페이지</Button>
-      </Footer>
+      <AdminButton onClick={() => navigate('/admin/boardList')}>
+          관리자 페이지로 이동하기
+      </AdminButton>   
+      
+      <BottomNavigation/>
     </Container>
   );
 };

@@ -93,13 +93,13 @@ const BoardMap = () => {
 
         geocoderRef.current.coord2Address(lng, lat, (result, status) => {
           if (status === window.kakao.maps.services.Status.OK) {
-            const roadNameAddress = result[0].road_address ? result[0].road_address.address_name : ''; 
+            const roadNameAddress = result[0].road_address ? result[0].road_address.address_name : '도로명 주소 없음'; 
             const detailedAddress = result[0].address.address_name;
 
             setResult(
               <div>
                 <LandAddress>{detailedAddress}</LandAddress>
-                <RoadAddress>도로명 주소: {roadNameAddress || '주소 없음'}</RoadAddress> 
+                <RoadAddress>도로명 주소: {roadNameAddress}</RoadAddress> 
                 <Coordinates>위도: {lat}</Coordinates>
                 <Coordinates>경도: {lng}</Coordinates>
               </div>
