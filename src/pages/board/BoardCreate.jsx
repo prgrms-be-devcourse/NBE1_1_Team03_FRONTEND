@@ -45,6 +45,7 @@ const AddressSection = styled.div`
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;
+  cursor: pointer; 
 `;
 
 const ImagePlaceholder = styled.div`
@@ -95,7 +96,7 @@ const FileInput = styled.input`
 const BoardCreate = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { latitude, longitude, roadNameAddress, detailedAddress } = location.state || {};
+  const { trashcanId, latitude, longitude, roadNameAddress, detailedAddress } = location.state || {};
 
   const [files, setFiles] = useState([]);
   const [significant, setSignificant] = useState("");
@@ -125,6 +126,7 @@ const BoardCreate = () => {
     formData.append('data', new Blob([JSON.stringify({
       boardCategory,
       significant,
+      trashcanId,
       latitude,
       longitude,
       roadNameAddress,
@@ -150,12 +152,28 @@ const BoardCreate = () => {
     }
   };
 
+  
+  const handleAddressClick = () => {
+    if (boardCategory === "ADD") {
+      navigate('/boardmap');
+    } else {
+      navigate('/boardmap-ect');
+    }
+  };
+
   return (
     <Container>
       <Title>신고 작성 페이지</Title>
 
-      <AddressSection onClick={() => navigate('/boardmap')}>
-        <p>여기를 누르면 지도가 나옵니다. 지도에 마커를 찍어 장소를 추가해 주세요.</p>
+      <SectionTitle>게시글 유형을 선택해주세요.</SectionTitle>
+      <ButtonContainer>
+        <Button onClick={() => setBoardCategory("ADD")} selected={boardCategory === "ADD"}>신규 등록</Button>
+        <Button onClick={() => setBoardCategory("MODIFY")} selected={boardCategory === "MODIFY"}>수정</Button>
+        <Button onClick={() => setBoardCategory("REMOVE")} selected={boardCategory === "REMOVE"}>삭제</Button>
+      </ButtonContainer>
+      
+      <AddressSection onClick={handleAddressClick}>
+        <p>여기를 누르면 지도가 나오니 마커를 찍어주세요. </p>
       </AddressSection>
 
       <InfoSection>
@@ -178,13 +196,6 @@ const BoardCreate = () => {
           ))}
         </div>
       </ImagePlaceholder>
-
-      <SectionTitle>게시글 유형을 선택해주세요.</SectionTitle>
-      <ButtonContainer>
-        <Button onClick={() => setBoardCategory("ADD")} selected={boardCategory === "ADD"}>신규 등록</Button>
-        <Button onClick={() => setBoardCategory("MODIFY")} selected={boardCategory === "MODIFY"}>수정</Button>
-        <Button onClick={() => setBoardCategory("REMOVE")} selected={boardCategory === "REMOVE"}>삭제</Button>
-      </ButtonContainer>
 
       <SectionTitle>쓰레기통 유형을 선택해 주세요.</SectionTitle>
       <ButtonContainer>
