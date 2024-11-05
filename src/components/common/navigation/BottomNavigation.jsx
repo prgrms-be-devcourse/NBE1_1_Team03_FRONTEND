@@ -7,7 +7,7 @@ export default function BottomNavigation() {
       <Link to="/" className={window.location.pathname === '/' ? 'active' : ''}>
         메인
       </Link>
-      <Link to="/board" className={window.location.pathname.includes('/board') ? 'active' : ''}>
+      <Link to="/boardList" className={window.location.pathname.includes('/boardList') ? 'active' : ''}>
         게시판
       </Link>
       <Link to="/products" className={window.location.pathname.includes('/product') ? 'active' : ''}>
