@@ -1,98 +1,67 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import axios from 'axios';
 import BottomNavigation from '../../components/common/navigation/BottomNavigation';
 
-const H1 = styled.h2`
-  color: black;
-  font-size: 24px;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
-const Container = styled.div`
-  padding: 20px;
-  background-color: #f5f5f5; 
-  padding-bottom: 80px;
-
-  @media (max-width: 768px) {
-    padding: 10px;
-  }
+const H1 = styled.h1`
+  font-size: 24px;
+  margin-bottom: 10px;
 `;
 
 const Header = styled.div`
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+`;
+
+const AdditionalButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 `;
 
 const Button = styled.button`
-  background-color: #D9D9D9;
-  color: black;
+  padding: 10px 20px;
+  background-color: ${({ isSelected }) => (isSelected ? '#3498db' : '#ccc')};
+  color: #fff;
   border: none;
   border-radius: 5px;
-  padding: 10px 5px;
-  flex: 1;
   cursor: pointer;
-  margin: 0 5px;
-  min-width: 80px;
-
-  ${(props) => props.isSelected && css`
-    background-color: #4C4C4C;
-    color: white;
-  `}
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   &:hover {
-    background-color: #4C4C4C;
-    color: white;
-  }
-
-  @media (max-width: 768px) {
-    padding: 8px 5px;
-    font-size: 14px;
+    background-color: ${({ isSelected }) => (isSelected ? '#2980b9' : '#aaa')};
   }
 `;
 
 const ButtonImage = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: 5px;
-`;
-
-const AdditionalButtons = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
 `;
 
 const AdditionalButton = styled.button`
-  background-color: #D9D9D9;
-  color: black;
+  padding: 10px 20px;
+  background-color: ${({ isSelected }) => (isSelected ? '#3498db' : '#ccc')}; 
+  color: #fff;
   border: none;
   border-radius: 5px;
-  padding: 10px 15px;
-  flex: 1;
   cursor: pointer;
-  margin-right: 5px;
-  min-width: 120px;
-
-  ${(props) => props.isSelected && css`
-    background-color: #4C4C4C;
-    color: white;
-  `}
 
   &:hover {
-    background-color: #4C4C4C;
-    color: white;
-  }
-
-  @media (max-width: 768px) {
-    padding: 8px 10px;
-    font-size: 14px;
+    background-color: ${({ isSelected }) => (isSelected ? '#2980b9' : '#aaa')};
   }
 `;
+
 
 const AddButton = styled.button`
   background-color: #FFA500;
@@ -113,7 +82,7 @@ const AddButton = styled.button`
     background-color: #FF8C00;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 360px) {
     width: 35px;
     height: 35px;
   }
@@ -134,9 +103,11 @@ const AdminButton = styled.button`
     color: white;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 360px) {
     padding: 8px 10px;
     font-size: 14px;
+    width: 100%; /* Full width on small screens */
+    margin: 5px 0; /* Add margin for spacing */
   }
 `;
 
@@ -154,8 +125,10 @@ const Item = styled.div`
   align-items: center;
   cursor: pointer; 
   
-  @media (max-width: 768px) {
+  @media (max-width: 360px) {
     padding: 10px;
+    flex-direction: column; /* Stack image and description on small screens */
+    align-items: flex-start; /* Align items to the start */
   }
 `;
 
@@ -165,9 +138,10 @@ const Image = styled.img`
   border-radius: 5px;
   margin-right: 15px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 360px) {
     width: 50px;
     height: 50px;
+    margin-bottom: 10px; /* Add margin for spacing */
   }
 `;
 
@@ -178,11 +152,9 @@ const Description = styled.div`
 const Pagination = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  position: absolute; 
-  bottom: 60px; 
-  left: 0;
-  right: 0;
+  margin-top: 10px; 
+  position: relative; 
+  bottom: 10px; 
 `;
 
 const PageButton = styled.button`
@@ -196,7 +168,7 @@ const PageButton = styled.button`
     text-decoration: underline;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 360px) {
     font-size: 14px;
   }
 `;
